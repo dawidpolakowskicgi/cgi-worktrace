@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - main
+  pull_request:
   workflow_dispatch:
 
 jobs:
@@ -34,8 +35,8 @@ jobs:
       - name: Check shell syntax
         shell: bash
         run: |
-          bash -n worktrace.sh
-          bash -n worktrace-desktop
+          bash -n tavri.sh
+          bash -n tavri-desktop
           bash -n tests/run.sh
           bash -n scripts/create-project-base.sh
           bash -n scripts/install.sh
@@ -45,7 +46,13 @@ jobs:
           node --check desktop/main.cjs
           node --check desktop/preload.cjs
           node --check desktop/renderer.cjs
-          node --check desktop/worktrace-core.cjs
+          node --check desktop/theme-symbols.cjs
+          node --check desktop/activity-templates.cjs
+          node --check desktop/update-check.cjs
+          node --check desktop/i18n.cjs
+          node --check desktop/focus-store.cjs
+          node --check desktop/widget-window.cjs
+          node --check desktop/tavri-core.cjs
           node --check tests/test_desktop_core.mjs
           node --check tests/test_desktop_renderer.mjs
 
@@ -64,12 +71,20 @@ jobs:
         shell: bash
         run: npm test
 
+      - name: Test production Electron flows (Linux)
+        if: runner.os == 'Linux'
+        run: xvfb-run -a npm run test:desktop:integration
+
+      - name: Test production Electron flows (macOS)
+        if: runner.os == 'macOS'
+        run: npm run test:desktop:integration
+
       - name: Smoke test installer
         shell: bash
         run: |
           install_dir="$(mktemp -d)"
-          WORKTRACE_INSTALL_DIR="$install_dir" ./scripts/install.sh
-          "$install_dir/worktrace" version
+          TAVRI_INSTALL_DIR="$install_dir" ./scripts/install.sh
+          "$install_dir/tavri" version
 
       - name: Smoke test release packager
         if: runner.os == 'Linux'
@@ -80,20 +95,23 @@ jobs:
           test -f "$output_dir/install.sh"
           test -f "$output_dir/install-macos.sh"
           test -f "$output_dir/install.ps1"
-          test -f "$output_dir/worktrace.sh"
-          test -f "$output_dir/worktrace-linux.tar.gz"
-          test -f "$output_dir/worktrace-macos.tar.gz"
-          test -f "$output_dir/worktrace-windows.zip"
+          test -f "$output_dir/tavri.sh"
+          test -f "$output_dir/tavri-linux.tar.gz"
+          test -f "$output_dir/tavri-macos.tar.gz"
+          test -f "$output_dir/tavri-windows.zip"
           test -f "$output_dir/SHA256SUMS.txt"
           archive_listing="$(mktemp)"
-          tar -tzf "$output_dir/worktrace-linux.tar.gz" > "$archive_listing"
+          tar -tzf "$output_dir/tavri-linux.tar.gz" > "$archive_listing"
           grep -q "/package.json" "$archive_listing"
           grep -q "/scripts/install-macos.sh" "$archive_listing"
           grep -q "/desktop/main.cjs" "$archive_listing"
           grep -q "/desktop/index.html" "$archive_listing"
-          grep -q "/assets/worktrace-clock-icon.icns" "$archive_listing"
-          grep -q "/assets/worktrace-clock-icon.ico" "$archive_listing"
-          grep -q "/assets/worktrace-clock-icon.png" "$archive_listing"
+          grep -q "/assets/tavri-icon.icns" "$archive_listing"
+          grep -q "/assets/tavri-icon.ico" "$archive_listing"
+          grep -q "/assets/tavri-icon.png" "$archive_listing"
+          grep -q "/desktop/i18n.cjs" "$archive_listing"
+          grep -q "/desktop/focus-store.cjs" "$archive_listing"
+          grep -q "/desktop/widget.html" "$archive_listing"
 
   windows-installer:
     name: Windows Installer
@@ -103,9 +121,9 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Install worktrace
+      - name: Install tavri
         shell: pwsh
         run: |
-          $installDir = Join-Path $env:RUNNER_TEMP "worktrace-bin"
+          $installDir = Join-Path $env:RUNNER_TEMP "tavri-bin"
           ./scripts/install.ps1 -InstallDir $installDir -NoPathUpdate
-          & (Join-Path $installDir "worktrace.cmd") version
+          & (Join-Path $installDir "tavri.cmd") version
