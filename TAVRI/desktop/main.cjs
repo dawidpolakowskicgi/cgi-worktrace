@@ -92,7 +92,7 @@ function createWindow() {
     height: 760,
     minWidth: 920,
     minHeight: 640,
-    title: "WORKTRACE",
+    title: "Tavri",
     backgroundColor: "#f5f4ef",
     icon: appIconPath(),
     show: false,
@@ -133,13 +133,13 @@ function createTray() {
   }
 
   tray = new Tray(trayIcon());
-  tray.setToolTip("WORKTRACE");
+  tray.setToolTip("Tavri");
   tray.setContextMenu(Menu.buildFromTemplate([
-    { label: "Show WORKTRACE", click: showMainWindow },
+    { label: "Show Tavri", click: showMainWindow },
     { label: "Open data directory", click: () => handleDesktopAction(openLogDirectory) },
     { type: "separator" },
     {
-      label: "Quit WORKTRACE",
+      label: "Quit Tavri",
       click: () => {
         isQuitting = true;
         app.quit();
@@ -222,7 +222,7 @@ async function exportWeek(formatValue) {
 
 app.whenReady().then(() => {
   if (process.platform === "win32") {
-    app.setAppUserModelId("com.cgi.worktrace.desktop");
+    app.setAppUserModelId("com.tavri.starter");
   }
 
   createStore();

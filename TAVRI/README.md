@@ -1,6 +1,6 @@
-# WORKTRACE
+# Tavri starter
 
-This project starter was generated from `CGI Worktrace`.
+This project starter was generated from `Tavri`.
 
 It gives you a solid Electron desktop base with:
 
@@ -30,7 +30,7 @@ package.json    App scripts and Electron dependency
 The starter stores logs in:
 
 ```text
-~/Documents/worktrace
+~/Documents/tavri
 ```
 
 ## What To Customize First
@@ -42,4 +42,4 @@ The starter stores logs in:
 
 ## Notes
 
-The scaffold intentionally keeps the file-backed weekly log model from CGI Worktrace so you can start from a working desktop app instead of an empty Electron shell.
+The scaffold intentionally keeps the file-backed weekly log model from Tavri so you can start from a working desktop app instead of an empty Electron shell.

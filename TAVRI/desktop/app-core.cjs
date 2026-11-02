@@ -1,4 +1,5 @@
 const fs = require("node:fs/promises");
+const { statSync } = require("node:fs");
 const os = require("node:os");
 const path = require("node:path");
 
@@ -14,7 +15,10 @@ class AppCoreError extends Error {
 }
 
 function defaultDataDir(homeDir = os.homedir()) {
-  return path.join(homeDir, "Documents", "worktrace");
+  const current = path.join(homeDir, "Documents", "tavri");
+  const legacy = path.join(homeDir, "Documents", "worktrace");
+  const isDirectory = (dir) => statSync(dir, { throwIfNoEntry: false })?.isDirectory() || false;
+  return !isDirectory(current) && isDirectory(legacy) ? legacy : current;
 }
 
 function pad2(value) {
