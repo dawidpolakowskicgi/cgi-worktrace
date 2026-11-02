@@ -1,0 +1,46 @@
+(function (root) {
+"use strict";
+const appearanceThemes = [
+  { id: "system", label: "System", description: "Follow your device’s light or dark appearance.", colors: ["#f7f5f0", "#202524", "#f5636f"] },
+  { id: "light", label: "Light", description: "Warm paper with a red, dark yellow or white accent.", colors: ["#f7f5f0", "#fffefb", "#b42332"] },
+  { id: "dark", label: "Dark", description: "Graphite surfaces with a red, dark yellow or white accent.", colors: ["#202524", "#303735", "#f5636f"] },
+  { id: "contrast-dark", label: "High contrast · Dark", description: "Black and white, cyan focus and bold outlines.", colors: ["#000000", "#ffffff", "#00ffff"] },
+  { id: "contrast-light", label: "High contrast · Light", description: "White canvas, black text and deep blue controls.", colors: ["#ffffff", "#000000", "#003a8c"] },
+  { id: "contrast-amber", label: "High contrast · Amber", description: "Amber on black with strong borders and clear focus.", colors: ["#070500", "#ffdf80", "#ffd166"] },
+  { id: "star-trek", label: "Star Trek · LCARS", description: "Connected rails, colour-coded navigation and a clear log surface.", colors: ["#08070d", "#ffba85", "#c6b5ff"] },
+  { id: "star-wars", label: "Star Wars · Holoterminal", description: "A restrained flight terminal with precise frames and amber readouts.", colors: ["#080d17", "#ffe66b", "#8cd8ff"] },
+  { id: "rebel", label: "Star Wars · Rebel", description: "Deep navy command panels, warm red signals and pale flight lines.", colors: ["#071524", "#10253b", "#ff6b57"] },
+  { id: "mandalorian", label: "Star Wars · Mandalorian", description: "Dark beskar-like plates with forest green and restrained brass.", colors: ["#101b19", "#1a2c29", "#e0bd75"] },
+  { id: "shire", label: "Middle-earth · Shire", description: "Soft parchment, meadow green and quiet book-like typography.", colors: ["#efe9d5", "#fffaf0", "#335e3c"] },
+  { id: "mordor", label: "Middle-earth · Mordor", description: "Dark stone, ember borders and molten-gold actions.", colors: ["#120d0e", "#211719", "#e59a55"] },
+  { id: "hogwarts", label: "Wizarding world · Hogwarts", description: "Parchment sheets, burgundy headings and antique gold details.", colors: ["#f3ead7", "#fffaf1", "#7a1c2b"] },
+  { id: "slytherin", label: "Wizarding world · Slytherin", description: "Emerald ink, silver highlights and precise ruled panels.", colors: ["#0b1714", "#13251f", "#b7dbc6"] },
+  { id: "arrakis", label: "Dune · Arrakis", description: "Desert-night surfaces, sand accents and angular field cards.", colors: ["#1b1715", "#2a231d", "#f3bf76"] },
+  { id: "winterfell", label: "Game of Thrones · Winterfell", description: "Cold slate, pale steel and calm northern typography.", colors: ["#0f1822", "#172736", "#c7dde7"] },
+  { id: "pipboy", label: "Fallout · Pip-Boy", description: "Green phosphor labels and a compact instrument grid.", colors: ["#07150d", "#0c2113", "#a9f0ae"] },
+  { id: "nightcity", label: "Cyberpunk · Night City", description: "Midnight panels, neon rose and crisp angled highlights.", colors: ["#10101a", "#1b1b2d", "#ff79cc"] },
+  { id: "blade-runner", label: "Blade Runner 2049", description: "Rain-soaked noir, amber readouts and charcoal glass.", colors: ["#13171d", "#232a31", "#f3b86b"] },
+  { id: "tron", label: "TRON: Legacy", description: "Electric cyan circuits on a deep black grid.", colors: ["#07131c", "#102630", "#86e7f5"] },
+  { id: "matrix", label: "The Matrix", description: "Emerald terminal lines with quiet code-like rhythm.", colors: ["#08120c", "#14251a", "#a8eba7"] },
+  { id: "alien", label: "Alien · Ship console", description: "Industrial graphite, amber instruments and precise dividers.", colors: ["#141918", "#222a26", "#eac87b"] },
+  { id: "grand-budapest", label: "Grand Budapest Hotel", description: "Rose, cream and burgundy in an elegant hotel ledger.", colors: ["#f2e8e4", "#fffaf5", "#873d5b"] },
+  { id: "foundation", label: "Foundation · Archive", description: "Ivory records, imperial blue and measured gold.", colors: ["#ecece7", "#fffefa", "#315878"] },
+  { id: "discworld", label: "Discworld · Chronicle", description: "Warm parchment, old ink and guild-ledger borders.", colors: ["#eee3cc", "#fff8e8", "#6b4330"] },
+  { id: "witcher", label: "The Witcher · Bestiary", description: "Dark steel, restrained crimson and field notes.", colors: ["#171b1b", "#252d2b", "#e5a09b"] },
+  { id: "hunger-games", label: "The Hunger Games · Capitol", description: "Obsidian, bronze and editorial gold hierarchy.", colors: ["#151318", "#262129", "#e8c77f"] },
+  { id: "narnia", label: "Narnia · Winter", description: "Snowy blue, warm white and antique brass.", colors: ["#e7eff0", "#fbfdfb", "#416579"] },
+  { id: "severance", label: "Severance · Office", description: "Cool mint, institutional gray and orderly forms.", colors: ["#e8efeb", "#f9fbf8", "#365f59"] },
+  { id: "stranger-things", label: "Stranger Things · Signal", description: "Eighties black, deep red and analog borders.", colors: ["#150e12", "#291b22", "#f08e97"] },
+  { id: "x-files", label: "The X-Files · Case file", description: "Paper dossiers, pine ink and typewriter labels.", colors: ["#e9e8db", "#f8f8ef", "#375b50"] },
+  { id: "doctor-who", label: "Doctor Who · Time dial", description: "Deep blue, copper and circular instruments.", colors: ["#101b2b", "#1b3045", "#dfbb86"] },
+  { id: "last-of-us", label: "The Last of Us · Field notes", description: "Charcoal, moss and weathered notebook edges.", colors: ["#171d19", "#283029", "#c0d39c"] },
+  { id: "daft-punk", label: "Daft Punk · Studio", description: "Chrome, black and warm gold with LED-like meters.", colors: ["#10131a", "#232a32", "#e8ca86"] },
+  { id: "pink-floyd", label: "Pink Floyd · Spectrum", description: "Black canvas, pale type and a fine spectrum line.", colors: ["#0d1016", "#20252d", "#a8ddeb"] },
+  { id: "bowie", label: "Bowie · Stardust", description: "Cobalt, coral and silver with angular highlights.", colors: ["#171b38", "#282e53", "#ffa6a4"] },
+  { id: "kraftwerk", label: "Kraftwerk · Grid", description: "Red, white and black in a strict geometric system.", colors: ["#eeeae5", "#fffefd", "#a7222a"] },
+  { id: "radiohead", label: "Radiohead · Kid A", description: "Icy blue-gray, quiet texture and fractured lines.", colors: ["#dde6e7", "#f4f8f7", "#2c5a6a"] },
+];
+
+if (typeof module !== "undefined") module.exports = { appearanceThemes };
+else root.TavriAppearance = { appearanceThemes };
+})(globalThis);

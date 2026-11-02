@@ -1,0 +1,249 @@
+/* Original palettes and symbolic details for the film, book, series and music collections. */
+.theme-browse { display: grid; grid-template-columns: minmax(150px, 220px) minmax(180px, 1fr) auto; align-items: end; gap: 12px; margin: 20px 0 8px; }
+.theme-browse label { display: grid; gap: 5px; color: var(--muted); font-size: 11px; font-weight: 600; }
+.theme-browse :is(input, select) { min-height: 36px; font-size: 12px; }
+#themeMatchCount { padding-bottom: 9px; color: var(--muted); font-size: 11px; white-space: nowrap; }
+.theme-family:is([data-family="films"], [data-family="books"], [data-family="series"], [data-family="music"]) .theme-family-choices { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.theme-preview-symbol { position: absolute; left: 6%; top: 30px; z-index: 1; display: grid; place-items: center; width: 25px; height: 25px; color: var(--preview-accent); }
+.theme-symbol { display: block; width: 100%; height: 100%; flex: 0 0 auto; }
+.active-theme-symbol { display: grid; place-items: center; width: 30px; height: 30px; margin-left: 8px; padding: 5px; border: 1px solid var(--line); border-radius: 7px; color: var(--accent); }
+.active-theme-symbol[hidden] { display: none; }
+@media (max-width: 900px) { .theme-browse { grid-template-columns: repeat(2, minmax(0, 1fr)); } #themeMatchCount { grid-column: 1 / -1; padding-bottom: 0; } }
+@media (max-width: 620px) { .theme-browse { grid-template-columns: 1fr; } #themeMatchCount { grid-column: auto; } .active-theme-symbol { margin-left: 0; } }
+
+body[data-theme="blade-runner"] {
+  color-scheme: dark; --bg: #121719; --surface: #20282b; --surface-soft: #303a3d;
+  --sidebar: #192126; --input: #192126; --ink: #f5f1e8; --muted: #c0cbc8; --line: #718587;
+  --accent: #f3b86b; --accent-hover: #ffd095; --accent-ink: #251609; --accent-soft: #43301e;
+  --danger: #ffb8a8; --focus: #ffdfa6;
+}
+body[data-theme="tron"] {
+  color-scheme: dark; --bg: #06141c; --surface: #10252f; --surface-soft: #193944;
+  --sidebar: #0b1d26; --input: #0b1d26; --ink: #eefbfb; --muted: #b4d9df; --line: #68acb9;
+  --accent: #86e7f5; --accent-hover: #bbf4fc; --accent-ink: #061d22; --accent-soft: #173d47;
+  --danger: #ffc6b5; --focus: #cef9ff;
+}
+body[data-theme="matrix"] {
+  color-scheme: dark; --bg: #08130d; --surface: #14251a; --surface-soft: #1e3826;
+  --sidebar: #0b1b10; --input: #0b1b10; --ink: #e8f8e8; --muted: #b7d8b9; --line: #5b9963;
+  --accent: #a8eba7; --accent-hover: #d5fbd4; --accent-ink: #0c220d; --accent-soft: #204529;
+  --danger: #ffb6a7; --focus: #dcffbe;
+}
+body[data-theme="alien"] {
+  color-scheme: dark; --bg: #111815; --surface: #222a26; --surface-soft: #313a32;
+  --sidebar: #18221c; --input: #18221c; --ink: #f5f0dc; --muted: #d2d6ba; --line: #929a72;
+  --accent: #eac87b; --accent-hover: #f7dfa1; --accent-ink: #211c0e; --accent-soft: #433b24;
+  --danger: #ffc0a7; --focus: #f9e6a9;
+}
+body[data-theme="grand-budapest"] {
+  color-scheme: light; --bg: #f2e8e4; --surface: #fffaf5; --surface-soft: #ead7d9;
+  --sidebar: #ebd9df; --input: #fffaf5; --ink: #3a2832; --muted: #66505a; --line: #aa8997;
+  --accent: #873d5b; --accent-hover: #6d2b47; --accent-ink: #ffffff; --accent-soft: #f1dce4;
+  --danger: #a12d38; --focus: #6d2b47;
+}
+body[data-theme="foundation"] {
+  color-scheme: light; --bg: #ecece7; --surface: #fffefa; --surface-soft: #e2e7e9;
+  --sidebar: #e0e4e6; --input: #fffefa; --ink: #233441; --muted: #50616b; --line: #8da0aa;
+  --accent: #315878; --accent-hover: #274766; --accent-ink: #ffffff; --accent-soft: #dce8f1;
+  --danger: #9d3434; --focus: #315878;
+}
+body[data-theme="discworld"] {
+  color-scheme: light; --bg: #eee3cc; --surface: #fff8e8; --surface-soft: #e6d6b7;
+  --sidebar: #e5d6bb; --input: #fff8e8; --ink: #332b20; --muted: #625748; --line: #9d8a6c;
+  --accent: #6b4330; --accent-hover: #513222; --accent-ink: #ffffff; --accent-soft: #ecd6bf;
+  --danger: #992e23; --focus: #6b4330;
+}
+body[data-theme="witcher"] {
+  color-scheme: dark; --bg: #151b1b; --surface: #252d2b; --surface-soft: #343e3b;
+  --sidebar: #1a2423; --input: #1a2423; --ink: #f1f0e8; --muted: #c9d1c8; --line: #778b85;
+  --accent: #e5a09b; --accent-hover: #f4c2b7; --accent-ink: #2b1517; --accent-soft: #503031;
+  --danger: #ffbbb0; --focus: #e9d8bc;
+}
+body[data-theme="hunger-games"] {
+  color-scheme: dark; --bg: #141319; --surface: #262129; --surface-soft: #352e35;
+  --sidebar: #1b1820; --input: #1b1820; --ink: #f8f2e6; --muted: #d8c8b0; --line: #9b876d;
+  --accent: #e8c77f; --accent-hover: #f5dda5; --accent-ink: #271e0e; --accent-soft: #4b3925;
+  --danger: #ffc2b1; --focus: #f8e5b2;
+}
+body[data-theme="narnia"] {
+  color-scheme: light; --bg: #e7eff0; --surface: #fbfdfb; --surface-soft: #dae7e9;
+  --sidebar: #dbe6e9; --input: #fbfdfb; --ink: #273945; --muted: #526773; --line: #91aab4;
+  --accent: #416579; --accent-hover: #315064; --accent-ink: #ffffff; --accent-soft: #d7e7ed;
+  --danger: #a43939; --focus: #365f75;
+}
+body[data-theme="severance"] {
+  color-scheme: light; --bg: #e8efeb; --surface: #f9fbf8; --surface-soft: #dbe7e2;
+  --sidebar: #d7e4df; --input: #f9fbf8; --ink: #223430; --muted: #4c625d; --line: #92aaa2;
+  --accent: #365f59; --accent-hover: #2b4c46; --accent-ink: #ffffff; --accent-soft: #d3e6e0;
+  --danger: #a43737; --focus: #315c59;
+}
+body[data-theme="stranger-things"] {
+  color-scheme: dark; --bg: #130e12; --surface: #291b22; --surface-soft: #3b2631;
+  --sidebar: #1a1016; --input: #1a1016; --ink: #f8eef0; --muted: #dcc2c9; --line: #a07682;
+  --accent: #f08e97; --accent-hover: #ffb4b5; --accent-ink: #2c1017; --accent-soft: #50252e;
+  --danger: #ffc4a8; --focus: #ffc6cc;
+}
+body[data-theme="x-files"] {
+  color-scheme: light; --bg: #e9e8db; --surface: #f8f8ef; --surface-soft: #dce1d7;
+  --sidebar: #dfe3d5; --input: #f8f8ef; --ink: #25342d; --muted: #4f6254; --line: #879d8c;
+  --accent: #375b50; --accent-hover: #28483f; --accent-ink: #ffffff; --accent-soft: #d6e7dc;
+  --danger: #a23b31; --focus: #375b50;
+}
+body[data-theme="doctor-who"] {
+  color-scheme: dark; --bg: #101b2b; --surface: #1b3045; --surface-soft: #2a4356;
+  --sidebar: #132438; --input: #132438; --ink: #f3f5ee; --muted: #c4d5dc; --line: #7b9dad;
+  --accent: #dfbb86; --accent-hover: #f1d1a4; --accent-ink: #20190f; --accent-soft: #433724;
+  --danger: #ffc0af; --focus: #e7daaa;
+}
+body[data-theme="last-of-us"] {
+  color-scheme: dark; --bg: #171d19; --surface: #283029; --surface-soft: #384439;
+  --sidebar: #1d281f; --input: #1d281f; --ink: #f2f1e6; --muted: #cbd6c1; --line: #80977d;
+  --accent: #c0d39c; --accent-hover: #e0edbd; --accent-ink: #1c2915; --accent-soft: #37472c;
+  --danger: #ffc7ad; --focus: #dce9b6;
+}
+body[data-theme="daft-punk"] {
+  color-scheme: dark; --bg: #10131a; --surface: #232a32; --surface-soft: #343d46;
+  --sidebar: #171d25; --input: #171d25; --ink: #f5f5f1; --muted: #c9d1d4; --line: #89989e;
+  --accent: #e8ca86; --accent-hover: #f7dfa9; --accent-ink: #241c0c; --accent-soft: #4b3e26;
+  --danger: #ffbfae; --focus: #eaf1dc;
+}
+body[data-theme="pink-floyd"] {
+  color-scheme: dark; --bg: #0d1016; --surface: #20252d; --surface-soft: #303844;
+  --sidebar: #151a22; --input: #151a22; --ink: #f5f7fa; --muted: #c4d2da; --line: #728b9b;
+  --accent: #a8ddeb; --accent-hover: #c7f4fb; --accent-ink: #11212a; --accent-soft: #1e4350;
+  --danger: #ffb5ac; --focus: #f4e3a8;
+}
+body[data-theme="bowie"] {
+  color-scheme: dark; --bg: #171b38; --surface: #282e53; --surface-soft: #39416b;
+  --sidebar: #1d2244; --input: #1d2244; --ink: #faf3f7; --muted: #d7c9dc; --line: #9b8bb3;
+  --accent: #ffa6a4; --accent-hover: #ffc7bb; --accent-ink: #291418; --accent-soft: #55323f;
+  --danger: #ffc1aa; --focus: #e5d5ff;
+}
+body[data-theme="kraftwerk"] {
+  color-scheme: light; --bg: #eeeae5; --surface: #fffefd; --surface-soft: #ece5e2;
+  --sidebar: #e5dfdc; --input: #fffefd; --ink: #242023; --muted: #5d5155; --line: #a89599;
+  --accent: #a7222a; --accent-hover: #861a20; --accent-ink: #ffffff; --accent-soft: #f1d9d9;
+  --danger: #9f1e2a; --focus: #a7222a;
+}
+body[data-theme="radiohead"] {
+  color-scheme: light; --bg: #dde6e7; --surface: #f4f8f7; --surface-soft: #d0dfe1;
+  --sidebar: #d5e1e2; --input: #f4f8f7; --ink: #20323a; --muted: #4c6168; --line: #8ba5ab;
+  --accent: #2c5a6a; --accent-hover: #224856; --accent-ink: #ffffff; --accent-soft: #d2e5e9;
+  --danger: #a23837; --focus: #2c5a6a;
+}
+
+/* Shared hierarchy keeps the familiar Tavri controls while each world gets its own frame. */
+body:is([data-theme="blade-runner"], [data-theme="tron"], [data-theme="matrix"], [data-theme="alien"], [data-theme="grand-budapest"], [data-theme="foundation"], [data-theme="discworld"], [data-theme="witcher"], [data-theme="hunger-games"], [data-theme="narnia"], [data-theme="severance"], [data-theme="stranger-things"], [data-theme="x-files"], [data-theme="doctor-who"], [data-theme="last-of-us"], [data-theme="daft-punk"], [data-theme="pink-floyd"], [data-theme="bowie"], [data-theme="kraftwerk"], [data-theme="radiohead"]) .workspace-title h2 { color: var(--accent); }
+body:is([data-theme="blade-runner"], [data-theme="tron"], [data-theme="matrix"], [data-theme="alien"], [data-theme="grand-budapest"], [data-theme="foundation"], [data-theme="discworld"], [data-theme="witcher"], [data-theme="hunger-games"], [data-theme="narnia"], [data-theme="severance"], [data-theme="stranger-things"], [data-theme="x-files"], [data-theme="doctor-who"], [data-theme="last-of-us"], [data-theme="daft-punk"], [data-theme="pink-floyd"], [data-theme="bowie"], [data-theme="kraftwerk"], [data-theme="radiohead"]) .tab.is-active { box-shadow: inset 3px 0 var(--accent); }
+body:is([data-theme="blade-runner"], [data-theme="tron"], [data-theme="matrix"], [data-theme="alien"], [data-theme="grand-budapest"], [data-theme="foundation"], [data-theme="discworld"], [data-theme="witcher"], [data-theme="hunger-games"], [data-theme="narnia"], [data-theme="severance"], [data-theme="stranger-things"], [data-theme="x-files"], [data-theme="doctor-who"], [data-theme="last-of-us"], [data-theme="daft-punk"], [data-theme="pink-floyd"], [data-theme="bowie"], [data-theme="kraftwerk"], [data-theme="radiohead"]) .metric:first-child { border-top: 3px solid var(--accent); }
+
+body[data-theme="blade-runner"] .topbar { border-bottom: 3px solid var(--accent); }
+body[data-theme="blade-runner"] :is(.composer, .settings-card, .chart-card, .contributions-card, .timeline-scroll) { border-radius: 2px; border-top: 2px solid var(--accent); }
+body[data-theme="blade-runner"] :is(.eyebrow, .entry-time, .metric strong) { font-family: var(--font-mono); }
+body[data-theme="blade-runner"] .entry { border-left: 2px solid var(--line); border-radius: 0; }
+
+body[data-theme="tron"] .topbar { border-bottom: 2px solid var(--accent); }
+body[data-theme="tron"] .sidebar { border-right: 2px solid var(--accent); }
+body[data-theme="tron"] :is(.composer, .settings-card, .chart-card, .contributions-card, .timeline-scroll) { border-radius: 0 12px 0 12px; border: 1px solid var(--line); box-shadow: inset 0 2px var(--accent); }
+body[data-theme="tron"] :is(.metric, .tab, input, select, button) { border-radius: 2px; }
+
+body[data-theme="matrix"] { font-family: var(--font-mono); }
+body[data-theme="matrix"] .topbar { border-bottom: 2px solid var(--accent); }
+body[data-theme="matrix"] :is(.composer, .settings-card, .chart-card, .contributions-card, .timeline-scroll) { border-radius: 0; border-left: 3px solid var(--accent); }
+body[data-theme="matrix"] :is(.metric, .entry, .tab, input, select, button) { border-radius: 0; }
+body[data-theme="matrix"] .entry { border-bottom: 1px dashed var(--line); }
+
+body[data-theme="alien"] .topbar { border-bottom: 4px double var(--accent); }
+body[data-theme="alien"] :is(.composer, .settings-card, .chart-card, .contributions-card, .timeline-scroll) { border-radius: 0; border-top: 3px solid var(--line); }
+body[data-theme="alien"] :is(.section-heading h3, .metric strong) { font-family: var(--font-mono); }
+body[data-theme="alien"] .metric { border-left: 2px solid var(--accent); border-radius: 0; }
+
+body:is([data-theme="grand-budapest"], [data-theme="foundation"], [data-theme="discworld"], [data-theme="narnia"]) :is(.workspace-title h2, .section-heading h3, .composer h3, .settings-card h3) { font-family: Georgia, "Times New Roman", serif; }
+body[data-theme="grand-budapest"] .topbar { border-bottom: 3px double var(--accent); }
+body[data-theme="grand-budapest"] :is(.composer, .settings-card, .chart-card, .contributions-card, .timeline-scroll) { border-radius: 11px; border: 3px double var(--line); }
+body[data-theme="grand-budapest"] .metric { border-top: 3px double var(--accent); }
+body[data-theme="grand-budapest"] .entry { border-radius: 8px; }
+
+body[data-theme="foundation"] .topbar { border-bottom: 3px solid var(--accent); }
+body[data-theme="foundation"] .sidebar { border-right: 2px solid var(--line); }
+body[data-theme="foundation"] :is(.composer, .settings-card, .chart-card, .contributions-card, .timeline-scroll) { border-radius: 2px; border-top: 2px solid var(--accent); }
+body[data-theme="foundation"] .metric { border-top: 2px solid var(--line); border-radius: 2px; }
+
+body[data-theme="discworld"] .topbar { border-bottom: 2px dashed var(--accent); }
+body[data-theme="discworld"] :is(.composer, .settings-card, .chart-card, .contributions-card, .timeline-scroll) { border-radius: 12px; border: 2px solid var(--line); }
+body[data-theme="discworld"] .entry { border-left: 3px solid var(--accent); }
+body[data-theme="discworld"] .metric { border-radius: 10px; }
+
+body[data-theme="witcher"] .topbar { border-bottom: 3px solid var(--accent); }
+body[data-theme="witcher"] :is(.composer, .settings-card, .chart-card, .contributions-card, .timeline-scroll) { border-radius: 0 8px 0 8px; border-left: 3px solid var(--accent); }
+body[data-theme="witcher"] .entry { border-bottom: 1px solid var(--line); border-radius: 0; }
+
+body[data-theme="hunger-games"] .topbar { border-bottom: 2px solid var(--accent); }
+body[data-theme="hunger-games"] .workspace-title h2 { text-transform: uppercase; letter-spacing: .08em; }
+body[data-theme="hunger-games"] :is(.composer, .settings-card, .chart-card, .contributions-card, .timeline-scroll) { border-radius: 0; border-top: 3px double var(--accent); }
+body[data-theme="hunger-games"] .metric { border-radius: 0; border-top: 2px solid var(--accent); }
+
+body[data-theme="narnia"] .topbar { border-bottom: 2px solid var(--accent); }
+body[data-theme="narnia"] :is(.composer, .settings-card, .chart-card, .contributions-card, .timeline-scroll) { border-radius: 14px; border-top: 3px solid var(--accent); }
+body[data-theme="narnia"] .metric { border-radius: 11px; }
+body[data-theme="narnia"] .tab { border-radius: 10px; }
+
+body[data-theme="severance"] .topbar { border-bottom: 1px solid var(--accent); }
+body[data-theme="severance"] :is(.composer, .settings-card, .chart-card, .contributions-card, .timeline-scroll) { border-radius: 2px; border: 1px solid var(--line); box-shadow: none; }
+body[data-theme="severance"] :is(.eyebrow, .section-heading h3) { letter-spacing: .14em; text-transform: uppercase; }
+body[data-theme="severance"] .metric { border-radius: 2px; }
+
+body[data-theme="stranger-things"] .topbar { border-bottom: 3px solid var(--accent); }
+body[data-theme="stranger-things"] .workspace-title h2 { font-family: Georgia, "Times New Roman", serif; letter-spacing: .04em; }
+body[data-theme="stranger-things"] :is(.composer, .settings-card, .chart-card, .contributions-card, .timeline-scroll) { border-radius: 3px; border-top: 2px solid var(--accent); }
+body[data-theme="stranger-things"] .entry { border-left: 2px solid var(--line); }
+
+body[data-theme="x-files"] .topbar { border-bottom: 2px solid var(--accent); }
+body[data-theme="x-files"] :is(.workspace-title h2, .section-heading h3, .entry-time) { font-family: var(--font-mono); }
+body[data-theme="x-files"] :is(.composer, .settings-card, .chart-card, .contributions-card, .timeline-scroll) { border-radius: 2px; border-left: 4px solid var(--line); }
+body[data-theme="x-files"] .entry { border-bottom: 1px dashed var(--line); border-radius: 0; }
+
+body[data-theme="doctor-who"] .topbar { border-bottom: 2px solid var(--accent); }
+body[data-theme="doctor-who"] :is(.composer, .settings-card, .chart-card, .contributions-card, .timeline-scroll) { border-radius: 18px; border-top: 3px solid var(--accent); }
+body[data-theme="doctor-who"] :is(.metric, .tab) { border-radius: 14px; }
+body[data-theme="doctor-who"] .timeline-dot { box-shadow: 0 0 0 3px var(--accent-soft); }
+
+body[data-theme="last-of-us"] .topbar { border-bottom: 3px solid var(--accent); }
+body[data-theme="last-of-us"] :is(.composer, .settings-card, .chart-card, .contributions-card, .timeline-scroll) { border-radius: 7px 2px 9px 2px; border-left: 3px solid var(--accent); }
+body[data-theme="last-of-us"] .entry { border-bottom: 1px solid var(--line); }
+
+body[data-theme="daft-punk"] .topbar { border-bottom: 3px solid var(--accent); }
+body[data-theme="daft-punk"] :is(.composer, .settings-card, .chart-card, .contributions-card, .timeline-scroll) { border-radius: 14px 14px 4px 4px; border-top: 3px solid var(--accent); }
+body[data-theme="daft-punk"] .metric { border-bottom: 3px solid var(--line); }
+body[data-theme="daft-punk"] .metric:first-child { border-bottom-color: var(--accent); }
+
+body[data-theme="pink-floyd"] .topbar { border-bottom: 3px solid transparent; border-image: linear-gradient(90deg, #ff9999, #ffd58f, #e9ef9c, #a1e5bd, #a8ddeb, #d5adf2) 1; }
+body[data-theme="pink-floyd"] :is(.composer, .settings-card, .chart-card, .contributions-card, .timeline-scroll) { border-radius: 2px; border-left: 3px solid var(--accent); }
+body[data-theme="pink-floyd"] .metric { border-radius: 0; border-top: 2px solid var(--accent); }
+
+body[data-theme="bowie"] .topbar { border-bottom: 3px solid var(--accent); }
+body[data-theme="bowie"] :is(.composer, .settings-card, .chart-card, .contributions-card, .timeline-scroll) { border-radius: 0 12px 0 12px; border-left: 3px solid var(--accent); }
+body[data-theme="bowie"] .workspace-title h2 { text-transform: uppercase; letter-spacing: .035em; }
+body[data-theme="bowie"] .metric { border-radius: 0 9px 0 9px; }
+
+body[data-theme="kraftwerk"] .topbar { border-bottom: 4px solid var(--accent); }
+body[data-theme="kraftwerk"] :is(.composer, .settings-card, .chart-card, .contributions-card, .timeline-scroll) { border-radius: 0; border-top: 2px solid var(--accent); }
+body[data-theme="kraftwerk"] :is(.metric, .tab, .entry, button, input, select) { border-radius: 0; }
+body[data-theme="kraftwerk"] .workspace-title h2 { text-transform: uppercase; letter-spacing: .05em; }
+
+body[data-theme="radiohead"] .topbar { border-bottom: 2px dashed var(--accent); }
+body[data-theme="radiohead"] :is(.composer, .settings-card, .chart-card, .contributions-card, .timeline-scroll) { border-radius: 3px 10px 2px 7px; border-top: 2px dashed var(--accent); }
+body[data-theme="radiohead"] .metric { border-left: 2px solid var(--line); }
+body[data-theme="radiohead"] .entry { border-bottom: 1px dashed var(--line); }
+
+body:is([data-theme="grand-budapest"], [data-theme="foundation"], [data-theme="discworld"], [data-theme="narnia"], [data-theme="severance"], [data-theme="x-files"], [data-theme="kraftwerk"], [data-theme="radiohead"]) :is(.contribution-cell, .heat-legend i)[data-level="1"] { background: #c5d5cd; }
+body:is([data-theme="grand-budapest"], [data-theme="foundation"], [data-theme="discworld"], [data-theme="narnia"], [data-theme="severance"], [data-theme="x-files"], [data-theme="kraftwerk"], [data-theme="radiohead"]) :is(.contribution-cell, .heat-legend i)[data-level="2"] { background: #91b8a0; }
+body:is([data-theme="grand-budapest"], [data-theme="foundation"], [data-theme="discworld"], [data-theme="narnia"], [data-theme="severance"], [data-theme="x-files"], [data-theme="kraftwerk"], [data-theme="radiohead"]) :is(.contribution-cell, .heat-legend i)[data-level="3"] { background: #4f8968; }
+body:is([data-theme="grand-budapest"], [data-theme="foundation"], [data-theme="discworld"], [data-theme="narnia"], [data-theme="severance"], [data-theme="x-files"], [data-theme="kraftwerk"], [data-theme="radiohead"]) :is(.contribution-cell, .heat-legend i)[data-level="4"] { background: #315d48; }
+
+[data-theme-choice="grand-budapest"] .theme-preview, [data-theme-choice="discworld"] .theme-preview { border-radius: 10px; border: 2px double var(--preview-accent); }
+[data-theme-choice="foundation"] .theme-preview, [data-theme-choice="severance"] .theme-preview, [data-theme-choice="kraftwerk"] .theme-preview { border-radius: 0; border-top: 3px solid var(--preview-accent); }
+[data-theme-choice="tron"] .theme-preview, [data-theme-choice="matrix"] .theme-preview, [data-theme-choice="pink-floyd"] .theme-preview { border-radius: 0; border-color: var(--preview-accent); }
+[data-theme-choice="narnia"] .theme-preview, [data-theme-choice="doctor-who"] .theme-preview, [data-theme-choice="daft-punk"] .theme-preview { border-radius: 12px; border-top: 3px solid var(--preview-accent); }
+[data-theme-choice="blade-runner"] .theme-preview, [data-theme-choice="alien"] .theme-preview, [data-theme-choice="witcher"] .theme-preview, [data-theme-choice="hunger-games"] .theme-preview, [data-theme-choice="stranger-things"] .theme-preview, [data-theme-choice="x-files"] .theme-preview, [data-theme-choice="last-of-us"] .theme-preview, [data-theme-choice="bowie"] .theme-preview, [data-theme-choice="radiohead"] .theme-preview { border-left: 4px solid var(--preview-accent); }
+[data-theme-choice="pink-floyd"] .preview-header { background: linear-gradient(90deg, #ff9999, #ffd58f, #e9ef9c, #a1e5bd, #a8ddeb, #d5adf2); height: 4px; }

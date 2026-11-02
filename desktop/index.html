@@ -1,175 +1,139 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>worktrace</title>
-    <link rel="stylesheet" href="./styles.css">
-  </head>
-  <body data-theme="dark">
-    <header class="topbar">
-      <div class="titlebar-drag topbar__brand">
-        <div class="topbar__mark" aria-hidden="true">
-          <svg class="topbar__icon" viewBox="0 0 300 140" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="CGI">
-            <title>CGI</title>
-            <g id="Layer_1">
-              <g>
-                <path fill="#e3262d" d="M74.8,27c-27.4,0-44.2,21.4-44.2,43c0,26,21.2,43,44.4,43c15.4,0,30-6.8,42.4-17.8v32.2
-      c-13,7.8-30.8,12.6-44.6,12.6C33.2,140,0,107.8,0,70C0,30,33.4,0,73,0c15.2,0,33,4.6,44.6,10.4V42C103,32.4,88.2,27,74.8,27z"></path>
-                <path fill="#e3262d" d="M201.6,140c-39.8,0-73.4-31-73.4-70c0-39.4,33.4-70,75.2-70c15.2,0,34,4,45.6,9.4v31.4
-      C235.8,33.2,218.8,27,204,27c-27.4,0-45.2,21.4-45.2,43c0,25.4,21,43.8,45.6,43.8c5.2,0,10.2-0.4,16.6-2.8V85.8h-22.4V59.2h51.2
-      V130C235.2,136.6,218.8,140,201.6,140z"></path>
-                <path fill="#e3262d" d="M272.1,137.2V2.8h28.8v134.4L272.1,137.2L272.1,137.2z"></path>
-              </g>
-            </g>
-          </svg>
-        </div>
-        <div class="topbar__copy">
-          <div class="topbar__namewrap">
-            <h1 class="topbar__name">worktrace</h1>
-            <p id="weekLabel">Loading</p>
-          </div>
-        </div>
-      </div>
-      <div class="topbar__actions">
-        <div class="export-actions" aria-label="Export current week">
-          <span>Export</span>
-          <button class="ghost-button export-button" data-format="txt" type="button" title="Export current week as plain text">TXT</button>
-          <button class="ghost-button export-button" data-format="csv" type="button" title="Export current week as CSV">CSV</button>
-          <button class="ghost-button export-button" data-format="pdf" type="button" title="Export current week as PDF">PDF</button>
-        </div>
-        <button class="theme-button" id="themeButton" type="button" title="Switch theme">Dark</button>
-        <div class="window-controls" aria-label="Window controls">
-          <button class="window-controls__button" data-window-action="minimize" type="button" title="Minimize">_</button>
-          <button class="window-controls__button" data-window-action="maximize" type="button" title="Maximize">▢</button>
-          <button class="window-controls__button is-close" data-window-action="close" type="button" title="Close">×</button>
-        </div>
-      </div>
-    </header>
-
-    <div class="app-shell">
-      <aside class="sidebar">
-        <div class="sidebar-brand">
-          <p>Workspace</p>
-        </div>
-
-        <div class="sidebar-actions">
-          <button class="ghost-button" id="refreshButton" type="button" title="Refresh logs">Refresh</button>
-        </div>
-
-        <div class="stats">
-          <div class="stat">
-            <span class="stat__value" id="weekCount">0</span>
-            <span class="stat__label">Week</span>
-          </div>
-          <div class="stat">
-            <span class="stat__value" id="todayCount">0</span>
-            <span class="stat__label">Today</span>
-          </div>
-        </div>
-
-        <nav class="tabs" aria-label="Views">
-          <button class="tab is-active" data-view="week" type="button">Week</button>
-          <button class="tab" data-view="today" type="button">Today</button>
-          <button class="tab" data-view="diagram" type="button">Diagram</button>
-          <button class="tab" data-view="edit" type="button">Edit</button>
-        </nav>
-
-        <details class="accordion">
-          <summary class="accordion__summary">
-            <span>View week</span>
-            <span class="accordion__hint">Week and range filters</span>
-          </summary>
-          <section class="panel panel--compact" aria-label="Date filters">
-            <form class="filter-form" id="weekFilterForm">
-              <label class="field">
-                <span>Week reference</span>
-                <select id="weekRefInput" name="weekRef"></select>
-              </label>
-              <div class="field-row">
-                <label class="field">
-                  <span>From</span>
-                  <input id="rangeStartInput" name="rangeStart" type="date">
-                </label>
-                <label class="field">
-                  <span>To</span>
-                  <input id="rangeEndInput" name="rangeEnd" type="date">
-                </label>
-              </div>
-              <div class="panel-actions">
-                <button class="ghost-button" id="applyWeekFilterButton" type="submit">Apply</button>
-                <button class="ghost-button" id="clearWeekFilterButton" type="button">Clear</button>
-              </div>
-              <p class="filter-summary" id="filterSummary">Showing the selected week.</p>
-            </form>
-          </section>
-        </details>
-
-        <div class="log-location">
-          <span>Log directory</span>
-          <button id="openLogDirButton" type="button" title="Open log directory">Open</button>
-        </div>
-        <p class="path" id="logDir">-</p>
-      </aside>
-
-      <main class="workspace">
-        <div class="workspace-title">
-          <div class="workspace-title__copy">
-            <p class="eyebrow">worktrace</p>
-            <h2 id="viewTitle">This week</h2>
-          </div>
-          <button id="entrySubmitButton" class="hero-button" type="submit" form="entryForm">+ Add</button>
-        </div>
-
-        <form class="entry-form" id="entryForm">
-          <input id="entryDateInput" name="entryDate" autocomplete="off" type="date" aria-label="Log date">
-          <input id="entryTimeInput" name="entryTime" autocomplete="off" type="time" aria-label="Log time">
-          <input id="timeSpentInput" name="timeSpent" autocomplete="off" maxlength="60" placeholder="Time spent" aria-label="Time spent">
-          <input id="entryInput" name="entry" autocomplete="off" maxlength="240" placeholder="Add activity text to log" aria-label="Log entry">
-          <input id="projectInput" name="project" autocomplete="off" maxlength="120" placeholder="Task project" aria-label="Task project">
-          <input id="referenceInput" name="reference" autocomplete="off" maxlength="180" placeholder="Ticket or link" aria-label="Ticket number or link">
-        </form>
-
-        <p class="status" id="status" role="status"></p>
-
-        <section class="view is-active" id="weekView" aria-labelledby="viewTitle">
-          <div class="section-heading">
-            <h3>Filtered log</h3>
-            <span id="weekFile">-</span>
-          </div>
-          <div class="entries" id="weekEntries"></div>
-          <div class="list-actions">
-            <button class="ghost-button" id="copyWeekButton" type="button">Copy to clipboard</button>
-          </div>
-        </section>
-
-        <section class="view" id="todayView" aria-labelledby="viewTitle">
-          <div class="section-heading">
-            <h3>Today</h3>
-            <span id="todayDate">-</span>
-          </div>
-          <div class="entries" id="todayEntries"></div>
-        </section>
-
-        <section class="view" id="diagramView" aria-labelledby="viewTitle">
-          <div class="section-heading">
-            <h3>Activity diagram</h3>
-            <span id="diagramSummary">-</span>
-          </div>
-          <div class="diagram" id="diagramPanel"></div>
-        </section>
-
-        <section class="view" id="editView" aria-labelledby="viewTitle">
-          <div class="section-heading">
-            <h3>Raw weekly file</h3>
-            <button class="save-button" id="saveWeekButton" type="button">Save</button>
-          </div>
-          <label class="sr-only" for="weekEditor">Raw weekly file content</label>
-          <textarea id="weekEditor" spellcheck="false"></textarea>
-        </section>
-      </main>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'">
+  <title>Tavri — Your work, clearly recorded.</title>
+  <link rel="stylesheet" href="./styles.css">
+  <link rel="stylesheet" href="./themes.css">
+  <link rel="stylesheet" href="./theme-worlds.css">
+</head>
+<body data-theme="dark">
+  <header class="topbar">
+    <div class="topbar__brand"><svg width="30" height="30" viewBox="0 0 1024 1024" aria-hidden="true" focusable="false"><rect x="48" y="48" width="928" height="928" rx="232" fill="var(--accent)"/><path d="M448 252h128v148h196v128H576v132c0 54 25 80 75 80h81v124h-91c-128 0-193-65-193-195V528H252V400h196z" fill="var(--accent-ink)" transform="translate(0 -54)"/><circle cx="730" cy="262" r="46" fill="#FFF9F0"/></svg><h1>tavri</h1><span class="topbar__divider"></span><span>Your work, clearly recorded.</span><span id="activeThemeSymbol" class="active-theme-symbol" aria-hidden="true" hidden></span></div>
+    <button id="timerTopbarButton" class="timer-topbar" type="button" hidden aria-label="Return to the activity timer"><span class="timer-status-dot" aria-hidden="true"></span><span id="timerTopbarLabel">00:00:00</span></button>
+    <button id="showWidgetButton" class="widget-topbar-button" type="button" title="Switch to the always-on-top focus widget">▣ Widget</button>
+    <details class="language-menu" id="languageMenu"><summary id="languageFlag" aria-label="Change interface language" title="Change interface language">🇬🇧</summary><div id="languageChoices" class="language-choices" role="group" aria-label="Interface language"></div></details>
+    <div class="window-controls" aria-label="Window controls">
+      <button data-window-action="minimize" aria-label="Minimize" title="Minimize">−</button><button data-window-action="maximize" aria-label="Maximize or restore" title="Maximize or restore">□</button><button data-window-action="close" aria-label="Hide to tray" title="Hide to tray">×</button>
     </div>
-
-    <script src="./renderer.cjs"></script>
-  </body>
+  </header>
+  <div class="app-shell">
+    <aside class="sidebar">
+      <p class="eyebrow">Workspace</p>
+      <nav class="tabs" aria-label="Main navigation">
+        <button class="tab" data-view="today" type="button"><svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="8"/><path d="M12 7v5l3 2"/></svg>Today<span class="nav-count" id="todayCount">0</span></button>
+        <button class="tab is-active" data-view="week" type="button"><svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M8 6h12M8 12h12M8 18h12M4 6h.1M4 12h.1M4 18h.1"/></svg>Activity<span class="nav-count" id="weekCount">0</span></button>
+        <button class="tab" data-view="archive" type="button"><svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="10" cy="10" r="6"/><path d="m15 15 5 5"/></svg>Search archive</button>
+        <button class="tab" data-view="changes" type="button"><svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M4 12a8 8 0 1 1 3 6M4 17v-5h5M12 7v5l3 2"/></svg>Change history</button>
+        <button class="tab" data-view="diagram" type="button"><svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M4 4v16h16M8 16v-4M13 16V8M18 16V5"/></svg>Insights</button>
+        <button class="tab" data-view="reports" type="button"><svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 3h10l4 4v14H5zM14 3v5h5M8 12h8M8 16h8"/></svg>Reports</button>
+        <button class="tab" data-view="team" type="button" hidden><svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="9" cy="8" r="3"/><circle cx="17" cy="9" r="2"/><path d="M3 20v-2a6 6 0 0 1 12 0v2M16 15a4 4 0 0 1 5 4v1"/></svg>Team</button>
+        <button class="tab" data-view="edit" type="button"><svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M4 7h6m4 0h6M4 17h10m4 0h2"/><circle cx="12" cy="7" r="2"/><circle cx="16" cy="17" r="2"/></svg>Settings</button>
+      </nav>
+      <div class="sidebar-note"><span class="local-dot"></span><span id="workspaceModeLabel">Personal workspace</span><p>Your entries stay in your log folder.</p></div>
+      <div class="sidebar-bottom"><button class="text-button" id="openHelpButton" type="button">? Guide &amp; tips</button><button class="text-button" id="openLogDirButton" type="button">↗ Open log folder</button><p class="path" id="logDir">Loading…</p><p class="shortcut-hint"><kbd>⌘ / Ctrl N</kbd> New activity<br><kbd>/</kbd> Search activities</p></div>
+    </aside>
+    <main class="workspace" id="workspace">
+      <div class="workspace-title"><div><p class="eyebrow" id="viewEyebrow">Your work at a glance</p><h2 id="viewTitle">Activity</h2><p class="subtitle" id="viewSubtitle">A clear record of what moved forward.</p></div><div class="heading-actions"><button class="ghost-button" id="refreshButton" type="button" title="Refresh entries"><svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M20 7v5h-5M4 17v-5h5M6.3 7a7 7 0 0 1 11.4-1L20 9M4 15l2.3 3A7 7 0 0 0 17.7 17"/></svg><span>Refresh</span></button><details class="export-menu" id="exportMenu"><summary>Export <span aria-hidden="true">↓</span></summary><div class="export-popover"><label class="field" for="exportScope">Scope<select id="exportScope"><option value="view">Current view</option><option value="range">Custom date range</option></select></label><div id="exportRangeFields" class="export-range-fields" hidden><label class="field" for="exportRangeStart">From<input id="exportRangeStart" type="date"></label><label class="field" for="exportRangeEnd">To<input id="exportRangeEnd" type="date"></label></div><p id="exportScopeSummary" class="export-scope-summary" role="status" aria-live="polite">Export visible activities</p><div class="export-actions"><button class="export-button" data-format="txt" type="button">Plain text <span>TXT</span></button><button class="export-button" data-format="csv" type="button">Spreadsheet <span>CSV</span></button><button class="export-button" data-format="pdf" type="button">Report <span>PDF</span></button><button id="copyWeekButton" type="button">Copy to clipboard</button></div></div></details></div></div>
+      <div class="mode-toolbar" id="modeToolbar"><div class="activity-tabs" id="activityTabs" role="tablist" aria-label="Activity display mode">
+        <button type="button" id="modeList" role="tab" data-activity-mode="list" aria-selected="true" aria-controls="weekView" tabindex="0"><svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M8 6h12M8 12h12M8 18h12M4 6h.1M4 12h.1M4 18h.1"/></svg><span>List</span></button>
+        <button type="button" id="modeTimeline" role="tab" data-activity-mode="timeline" aria-selected="false" aria-controls="timelinePanel" tabindex="-1"><svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 12h14M7 6v12M17 6v12"/><rect x="10" y="9" width="4" height="6" rx="1"/></svg><span>Timeline</span></button>
+        <button type="button" id="modeCalendar" role="tab" data-activity-mode="calendar" aria-selected="false" aria-controls="calendarPanel" tabindex="-1"><svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><rect x="4" y="6" width="16" height="14" rx="2"/><path d="M8 3v5M16 3v5M4 11h16M8 15h1M14 15h1"/></svg><span>Contributions</span></button>
+      </div><button id="modeAddButton" class="ghost-button" type="button" hidden>+ Log activity</button></div>
+      <div class="period-toolbar" id="periodToolbar"><div class="period-select"><button id="previousWeekButton" title="Previous week" aria-label="Previous week">‹</button><label class="sr-only" for="weekRefInput">Selected week</label><select id="weekRefInput"></select><button id="nextWeekButton" title="Next week" aria-label="Next week">›</button></div><button class="text-button" id="currentWeekButton">This week</button><span id="weekLabel" class="muted"></span></div>
+      <section class="focus-section" id="focusSection" hidden aria-labelledby="focusTitle"><div class="section-heading"><div><h3 id="focusTitle">Plan for today</h3><p class="field-help">Choose up to three outcomes. Each session stays linked to its task, even when your activity wording changes.</p></div><span id="focusSummary" class="muted"></span></div><form id="focusForm" class="focus-form"><label class="field">Outcome<input id="focusTitleInput" maxlength="200" placeholder="What do you want to finish?" required></label><label class="field">Project<input id="focusProjectInput" maxlength="120" placeholder="Optional"></label><label class="field">Reference<input id="focusReferenceInput" maxlength="240" placeholder="Optional"></label><button class="primary-button" type="submit">Add to today</button></form><div id="focusTasks" class="focus-tasks"></div><div id="focusCarryovers" class="focus-carryovers"></div><p id="focusStatus" class="field-help" role="status" aria-live="polite"></p></section>
+      <div class="metrics" id="metrics" aria-label="Visible activity totals"><div class="metric"><span>Recorded time</span><strong id="totalTime">0m</strong><small id="timeCoverage">Add a duration to track time</small></div><div class="metric"><span>Activities</span><strong id="totalActivities">0</strong><small id="activityScope">Selected week</small></div><div class="metric"><span>Projects</span><strong id="totalProjects">0</strong><small id="activeDays">0 active days</small></div></div>
+      <section class="composer" id="composer" aria-labelledby="composerTitle">
+        <form id="entryForm">
+          <div class="composer-heading"><h3 id="composerTitle">Log an activity</h3><span id="draftHint" class="muted">Small updates. A clearer picture.</span><button id="timerStartButton" class="ghost-button timer-start" type="button">◷ Start timer</button></div>
+          <div class="quick-entry"><label class="sr-only" for="entryInput">Activity description</label><input id="entryInput" name="entry" autocomplete="off" maxlength="2000" placeholder="What did you work on?" required><button id="entrySubmitButton" class="primary-button" type="submit">+ Add activity</button></div>
+          <div id="activityTimer" class="activity-timer" aria-label="Activity timer" hidden><div class="activity-timer-main"><div class="activity-timer-readout"><span class="timer-status-dot" aria-hidden="true"></span><strong id="timerElapsed" role="timer" aria-label="Elapsed time">00:00:00</strong><span id="timerStateLabel" class="muted">Running</span></div><div class="activity-timer-actions"><button id="timerPauseButton" class="ghost-button" type="button" hidden>Pause</button><button id="timerResumeButton" class="ghost-button" type="button" hidden>Resume</button><button id="timerFinishButton" class="ghost-button" type="button" hidden>Use time</button><button id="timerDiscardButton" class="text-button" type="button" hidden>Discard</button></div></div><p id="timerHelp" class="field-help"></p></div>
+          <details id="templateGuide" class="template-guide"><summary>Use a guided template <span class="muted">12 types of work</span></summary><div class="template-guide-body"><div class="template-guide-heading"><label class="field" for="templateSelect">Type of activity<select id="templateSelect"></select></label><p id="templatePurpose" class="field-help"></p></div><div id="templateFields" class="template-fields"></div><div class="template-guide-footer"><div><span class="template-preview-label">Activity preview</span><p id="templatePreview" class="template-preview">Answer the first question to see a preview.</p><small>The first answer is required. Other details are optional. Date, time, duration, project and reference stay in the main form.</small></div><button id="templateApplyButton" class="ghost-button" type="button" disabled>Use this description</button></div></div></details>
+          <details id="entryDetails"><summary>Date, duration &amp; details <span id="entryDetailsHint" class="muted"></span></summary><div class="entry-fields"><label class="field">Date<input id="entryDateInput" type="date" required></label><label class="field">Start time<input id="entryTimeInput" type="time"></label><label class="field">Duration<input id="timeSpentInput" placeholder="e.g. 1h 30m" maxlength="40" aria-describedby="durationHelp"></label><label class="field">Project<input id="projectInput" list="projectSuggestions" placeholder="Choose or create" maxlength="120" autocomplete="off"><datalist id="projectSuggestions"></datalist></label><label class="field">Reference<input id="referenceInput" placeholder="Ticket or link" maxlength="240"></label><label class="field">Linked task<select id="taskSelect"><option value="">No task</option></select></label></div><p id="durationHelp" class="field-help">Duration, project, reference and task are optional. A number without a unit means hours.</p></details>
+          <div class="composer-footer" id="composerFooter" hidden><button id="cancelEditButton" class="text-button" type="button">Cancel editing</button><span class="muted">⌘ / Ctrl Enter to save · Esc to cancel</span></div>
+        </form>
+      </section>
+      <div class="status-wrap"><p class="status" id="status" role="status" aria-live="polite"></p><button id="undoButton" class="text-button" hidden>Undo deletion</button></div>
+      <section class="filter-toolbar" id="filterToolbar" aria-label="Filter activities"><div class="search-field"><span aria-hidden="true">⌕</span><label class="sr-only" for="searchInput">Search activities</label><input id="searchInput" type="search" placeholder="Search activities, projects or references…" autocomplete="off"><kbd>/</kbd></div><label class="sr-only" for="projectFilter">Filter by project</label><select id="projectFilter"><option value="">All projects</option></select><details class="range-menu"><summary>Date range</summary><form id="weekFilterForm" class="range-popover"><label class="field">From<input id="rangeStartInput" type="date"></label><label class="field">To<input id="rangeEndInput" type="date"></label><button class="primary-button" id="applyWeekFilterButton" type="submit">Apply range</button></form></details><button class="text-button" id="clearWeekFilterButton" hidden>Clear filters</button></section>
+      <p class="filter-summary" id="filterSummary"></p>
+      <section class="view is-active" id="weekView" role="tabpanel" aria-labelledby="modeList"><div class="section-heading"><h3>Activity list</h3><span id="weekFile" class="muted"></span></div><div class="entries" id="weekEntries"></div></section>
+      <section id="timelinePanel" class="activity-panel" role="tabpanel" aria-labelledby="modeTimeline" hidden><div class="section-heading"><h3>Activity timeline</h3><div class="timeline-heading-actions"><span class="muted">From first to last visible date</span><button id="timelineFullscreenButton" class="ghost-button" type="button" aria-pressed="false" title="Show timeline on full screen">⛶ <span id="timelineFullscreenLabel">Full screen</span></button></div></div><p class="field-help">Each circle is one activity. Short notes alternate above and below the date line; select a circle to see the full entry. Scroll sideways when the dates need more room.</p><div id="timelineCanvas"></div><div id="timelineSelection" aria-live="polite"></div></section>
+      <section id="calendarPanel" class="activity-panel" role="tabpanel" aria-labelledby="modeCalendar" hidden>
+        <div class="contributions-card"><div class="section-heading"><div><h3>Activity, day by day</h3><p id="calendarSummary" class="field-help"></p></div><div class="year-navigation"><button id="previousYearButton" aria-label="Previous year">‹</button><span id="calendarYearLabel"></span><button id="nextYearButton" aria-label="Next year">›</button></div></div><div id="contributionsGrid" class="contributions-scroll" tabindex="0" aria-label="Yearly activity calendar"></div><div class="contributions-footer"><span id="calendarDayHint">Choose a day to explore its activities.</span><div class="heat-legend" aria-label="Activity scale: 0, 1, 2–3, 4–6, 7 or more activities"><span>Less</span><i data-level="0"></i><i data-level="1"></i><i data-level="2"></i><i data-level="3"></i><i data-level="4"></i><span>More</span></div></div></div>
+        <div class="section-heading contribution-detail-heading"><h3 id="contributionDateLabel"></h3><span id="contributionCount" class="muted"></span></div><p class="field-help">Totals, copy and export use the selected day and your filters.</p><div id="contributionEntries" class="commit-entries"></div>
+      </section>
+      <section class="view" id="todayView" aria-labelledby="viewTitle"><div class="section-heading"><h3>Today's activities</h3><span id="todayDate" class="muted"></span></div><div class="entries" id="todayEntries"></div></section>
+      <section class="view" id="diagramView" aria-labelledby="viewTitle"><div class="section-heading"><h3>Where your time goes</h3><span id="diagramSummary" class="muted"></span></div><div id="diagramPanel" class="diagram"></div><section id="taskTimeSection" class="task-time-section" aria-labelledby="taskTimeTitle"><div class="section-heading"><div><h3 id="taskTimeTitle">Time on tasks</h3><p class="field-help">Compare saved durations with the current timer. Bars show time, not progress toward a target.</p></div></div><div id="taskTimeOverview"></div><div id="taskTimeRows" class="task-time-rows"></div><p id="taskTimeHint" class="field-help"></p></section><section class="weekly-review" aria-labelledby="weeklyReviewTitle"><div class="section-heading"><div><h3 id="weeklyReviewTitle">Review the selected week</h3><p id="weeklyReviewSummary" class="field-help"></p></div><button id="copyWeeklyReviewButton" class="ghost-button" type="button">Copy week summary</button></div><div id="weeklyReviewDays" class="review-days"></div><p class="field-help">Days without entries are shown as unrecorded, not as zero work.</p></section></section>
+      <section class="view" id="archiveView" aria-labelledby="viewTitle"><div class="section-heading"><div><h3>Search every weekly file</h3><p class="field-help">Find descriptions, projects and references across your local archive. Results show their original week.</p></div></div><form id="archiveSearchForm" class="archive-search-form"><label class="field">Search terms<input id="archiveQuery" type="search" placeholder="Describe the work, project or ticket…" autocomplete="off"></label><label class="field">Project<input id="archiveProject" placeholder="Any project" autocomplete="off"></label><label class="field">From<input id="archiveStart" type="date"></label><label class="field">To<input id="archiveEnd" type="date"></label><button class="primary-button" type="submit">Search archive</button></form><p id="archiveStatus" class="field-help" role="status" aria-live="polite">Enter a term or choose dates, then search the archive.</p><div id="archiveResults"></div></section>
+      <section class="view" id="changesView" aria-labelledby="viewTitle"><div class="section-heading"><div><h3>What changed in Tavri</h3><p class="field-help">Real timestamps for changes made in the desktop app from this version onward. Older log files do not contain creation times.</p></div></div><label class="field change-search">Find a change<input id="changeQuery" type="search" placeholder="Search descriptions or operation types…" autocomplete="off"></label><p id="changesStatus" class="field-help" role="status" aria-live="polite"></p><div id="changeEvents" class="change-events"></div></section>
+      <section class="view" id="reportsView" aria-labelledby="viewTitle">
+        <div class="section-heading"><div><h3>Build a report</h3><p class="field-help">Choose a period, data source and charts. Preview the same data before exporting.</p></div></div>
+        <div class="report-presets"><label class="field">Quick period<select id="reportQuickPeriod"><option value="week">This week</option><option value="last14">Last 14 days</option><option value="month">This month</option><option value="quarter">This quarter</option></select></label><button id="reportApplyPeriod" class="ghost-button" type="button">Use period</button><button id="reportUseActivityRange" class="ghost-button" type="button">Use Activity range</button><label class="field">Saved template<select id="reportSavedPreset"><option value="">Choose a saved template</option></select></label><button id="reportLoadPreset" class="ghost-button" type="button">Load</button><label class="field">Template name<input id="reportPresetName" maxlength="60" placeholder="e.g. Sprint review"></label><button id="reportSavePreset" class="ghost-button" type="button">Save template</button><button id="reportDeletePreset" class="text-button" type="button">Delete selected</button></div>
+        <div class="report-controls">
+          <label class="field">From<input id="reportStart" type="date"></label><label class="field">To<input id="reportEnd" type="date"></label>
+          <label class="field">Source<select id="reportSource"><option value="personal">My activities</option><option value="team">Team workspace</option></select></label>
+          <label class="field" id="reportPersonField" hidden>Person<select id="reportPerson"><option value="all">Everyone, including me</option><option value="me">Only me</option></select></label>
+          <label class="field">Measure<select id="reportMetric"><option value="activities">Activity count</option><option value="minutes">Recorded time</option></select></label>
+        </div>
+        <fieldset class="report-chart-options"><legend>Charts and comparison</legend><label><input id="reportChartTrend" type="checkbox" checked> Over time</label><label><input id="reportChartProjects" type="checkbox" checked> Projects</label><label><input id="reportChartPeople" type="checkbox" checked> People</label><label><input id="reportCompare" type="checkbox"> Compare with previous period</label></fieldset>
+        <div class="report-actions"><button id="reportPreviewButton" class="primary-button" type="button">Update preview</button><button id="reportExportButton" class="ghost-button" type="button" disabled>Export PDF</button><button id="reportExportCsvButton" class="ghost-button" type="button" disabled>Export CSV</button><button id="reportCopySummaryButton" class="text-button" type="button" disabled>Copy summary</button></div>
+        <p id="reportStatus" class="field-help" role="status" aria-live="polite">Choose a period and update the preview.</p>
+        <div id="reportPreview"></div>
+      </section>
+      <section class="view" id="teamView" aria-labelledby="viewTitle">
+        <div class="section-heading"><div><h3>Team workspace</h3><p class="field-help">Import weekly .log files shared by colleagues. Tavri keeps local snapshots, separate from your personal journal.</p></div></div>
+        <div class="team-import-card"><label class="field" for="teamPersonName">Person's name<input id="teamPersonName" maxlength="80" placeholder="e.g. Alex Morgan" autocomplete="off"></label><div class="team-import-actions"><button id="teamImportButton" class="primary-button" data-team-import-kind="files" type="button">Choose weekly files…</button><button class="ghost-button" data-team-import-kind="folder" type="button">Folder…</button><button class="ghost-button" data-team-import-kind="zip" type="button">ZIP…</button></div></div>
+        <p class="field-help">Use one person's files per import. Review added, changed and unchanged weeks before confirming. Reimporting a week replaces that person's snapshot; original files stay untouched.</p>
+        <div class="section-heading"><h3>Imported people</h3><span id="teamSummary" class="muted"></span></div><div id="teamMembers" class="team-members"></div>
+        <div class="section-heading"><h3>Recent team changes</h3><button id="undoTeamChangeButton" class="text-button" type="button" hidden>Undo last change</button></div><div id="teamHistory" class="team-history"></div>
+      </section>
+      <section class="view" id="editView" aria-labelledby="viewTitle">
+        <section class="settings-card"><h3>Language</h3><div class="setting-row"><label for="languageSelect">Interface language<small>Also available from the flag in the top right corner.</small></label><select id="languageSelect"></select></div></section>
+        <section class="settings-card"><h3>Workspace mode</h3><div class="setting-row"><label for="workspaceModeSelect">Mode<small>Choose a personal journal or a local Admin / PO team workspace.</small></label><select id="workspaceModeSelect"><option value="personal">Personal</option><option value="team">Admin / PO · Team</option></select></div><p class="field-help">This changes the local view. It does not grant access to anyone else's files or create online accounts.</p></section>
+        <section class="settings-card appearance-card"><h3>The look of your workspace</h3><div class="setting-row"><label for="themeSelect">Appearance<small>Everyday, high contrast and themed worlds.</small></label><select id="themeSelect"><option value="system">System</option><option value="light">Light</option><option value="dark">Dark</option></select></div><div class="theme-browse"><label for="themeFamilyFilter">Browse category<select id="themeFamilyFilter"><option value="all">All categories</option></select></label><label for="themeSearch">Find a look<input id="themeSearch" type="search" placeholder="Search appearances…" autocomplete="off"></label><span id="themeMatchCount" role="status" aria-live="polite"></span></div><div id="themeGallery" class="theme-gallery" role="group" aria-label="Choose an appearance"></div><p id="themeNoResults" class="field-help" hidden>No appearances match this search.</p><p id="themeDescription" class="field-help" aria-live="polite"></p><div class="setting-row"><div><span>Accent color</span><small>For System, Light and Dark.</small></div><div class="accent-choices" role="group" aria-label="Accent color"><button type="button" class="accent-choice" data-accent-choice="red" aria-pressed="true"><span class="accent-swatch" aria-hidden="true"></span>Red</button><button type="button" class="accent-choice" data-accent-choice="gold" aria-pressed="false"><span class="accent-swatch" aria-hidden="true"></span>Dark yellow</button><button type="button" class="accent-choice" data-accent-choice="white" aria-pressed="false"><span class="accent-swatch" aria-hidden="true"></span>White</button></div></div><div class="setting-row"><label for="densitySelect">Timeline density<small>Choose how much space each activity uses.</small></label><select id="densitySelect"><option value="comfortable">Comfortable</option><option value="compact">Compact</option></select></div></section>
+        <section class="settings-card"><h3>Your data, on your device</h3><p>Activities are stored as readable weekly log files. Use “Open log folder” to back them up. Before replacing a week, Tavri keeps its previous version in the .backups folder.</p><p class="field-help">Closing the window keeps Tavri in the tray. Use the tray menu to quit.</p></section>
+        <section class="settings-card"><h3>Backup and restore</h3><p>Save all personal weekly logs and your focus plan in one Tavri backup file. Preview a backup before restoring it. Tavri preserves the current versions in a recovery folder.</p><div class="data-actions"><button id="createBackupButton" class="ghost-button" type="button">Save personal backup…</button><button id="restoreBackupButton" class="ghost-button" type="button">Restore from backup…</button></div><p class="field-help">Team imports are stored separately in the .tavri-team folder. Keep a copy of that folder when backing up a team workspace.</p></section>
+        <section class="settings-card"><h3>App updates</h3><p>Check published Tavri releases when you choose. Tavri does not contact GitHub in the background.</p><div class="data-actions"><button id="checkUpdatesButton" class="ghost-button" type="button">Check for updates</button><button id="openUpdatePageButton" class="text-button" type="button" hidden>Open release page ↗</button></div><p id="updateStatus" class="field-help" role="status" aria-live="polite"></p></section>
+        <details class="settings-card" id="advancedSettings"><summary>Advanced · edit a weekly file</summary><p class="field-help">This edits the complete selected week, including activities hidden by filters. Refresh first if another editor has changed the file.</p><div class="section-heading"><h3 id="editorWeekLabel">Selected week</h3><span id="editorDirty" class="muted">Saved</span></div><label class="sr-only" for="weekEditor">Raw weekly file content</label><textarea id="weekEditor" spellcheck="false"></textarea><div class="editor-actions"><button class="primary-button" id="saveWeekButton">Save weekly file</button><button id="discardEditorButton" class="ghost-button">Discard draft</button></div></details>
+        <p class="settings-footnote">Tavri · A little clarity, every day.</p>
+      </section>
+    </main>
+    <div class="cgi-signature" aria-label="CGI"><img src="../assets/cgi-logo.svg" alt="CGI"></div>
+  </div>
+  <dialog id="confirmDialog"><form method="dialog"><h2 id="confirmTitle">Confirm action</h2><p id="confirmMessage"></p><div class="dialog-actions"><button value="cancel" autofocus>Cancel</button><button id="confirmAccept" value="confirm" class="primary-button">Continue</button></div></form></dialog>
+  <dialog id="helpDialog" class="help-dialog" aria-labelledby="helpTitle">
+    <header class="help-header"><div><p class="eyebrow">A clearer workday</p><h2 id="helpTitle">Welcome to Tavri</h2><p class="help-intro">Capture what you did, find it later and turn it into a useful summary.</p></div><button id="helpCloseButton" class="ghost-button help-close" type="button" aria-label="Close guide">×</button></header>
+    <div class="help-tabs" role="group" aria-label="Guide sections"><button id="helpWelcomeTab" type="button" aria-pressed="true">Get started</button><button id="helpGuideTab" type="button" aria-pressed="false">Guide &amp; tips</button></div>
+    <div class="help-scroll">
+      <section id="helpWelcomePanel" aria-label="Getting started">
+        <div class="help-steps"><div class="help-step"><span>01</span><h3>Plan a result</h3><p>In Today, choose up to three outcomes. Add a project or reference when it helps you find the work later.</p></div><div class="help-step"><span>02</span><h3>Track a session</h3><p>Start from a planned task, pause for breaks and use the floating widget when you want the timer above other windows.</p></div><div class="help-step"><span>03</span><h3>Close the loop</h3><p>Save what changed, mark completed outcomes and write the next step for unfinished work.</p></div></div>
+        <div class="help-tip"><div><p class="eyebrow">Tip <span id="helpTipNumber">1</span> of <span id="helpTipTotal">8</span></p><p id="helpTipText"></p></div><button id="nextHelpTipButton" class="ghost-button" type="button">Next tip →</button></div>
+      </section>
+      <section id="helpGuidePanel" aria-label="Guide and tips" hidden>
+        <div class="help-guide-grid">
+          <article><h3>1. Plan and log</h3><p>In Today, add up to three outcomes and start a session from one of them. The activity form links the session to that task, even if you change the wording. Pause for breaks, then use the timer time or save directly. The timer adds to any duration already entered and keeps counting while Tavri is closed.</p></article>
+          <article><h3>2. Read the history</h3><p>Activity shows the selected week. List groups entries by day; Timeline places each entry on a dated line and can fill the screen; Contributions shows a year of work. Search archive finds entries across all weekly files. Change history records desktop edits from this version onward.</p></article>
+          <article><h3>3. Understand your work</h3><p>Insights shows saved time by day, project and task, plus the current unsaved timer and a seven-day review. Linked sessions stay together under one task. A short bar means less recorded time, not less progress. Choose a From/To range in Activity to see multiple weeks in the list and Insights. Reports offers presets, comparisons, charts and a data table.</p></article>
+          <article><h3>4. Copy or export</h3><p>Open Export in Activity or Today. Choose Current view or a custom From/To date range, then copy or save TXT, CSV or PDF. Custom ranges can span archived weeks; active search and project filters still apply.</p></article>
+          <article><h3>5. Work with a team</h3><p>In Settings, switch to Admin / PO to reveal Team. Preview a colleague's weekly .log files, folder or ZIP before import. Tavri keeps local snapshots for reports; remove a week or person and undo the last team change when needed.</p></article>
+          <article><h3>6. Keep your data safe</h3><p>In Settings, save a personal backup of weekly logs and the focus plan, or preview one before restoring. Tavri saves current versions to a recovery folder. Team snapshots live separately in .tavri-team. You can also choose an appearance, timeline density and check for published updates manually.</p></article>
+        </div>
+        <section class="help-workflow" aria-labelledby="helpWorkflowTitle"><h3 id="helpWorkflowTitle">A practical focus loop</h3><p>Use this cycle for one meaningful piece of work. It keeps the journal useful without constant logging.</p><ol><li><strong>Plan.</strong> Choose one to three outcomes in Today.</li><li><strong>Focus.</strong> Start a linked session, pause for breaks and switch to the floating widget if helpful.</li><li><strong>Record.</strong> Save what changed and the measured duration. Later sessions keep the same task link.</li><li><strong>Review.</strong> Mark completed outcomes, write a next step or move unfinished work to tomorrow; compare time in Insights.</li></ol><div class="help-workflow-actions"><button id="helpFlowStartButton" class="primary-button" type="button">Open Today</button><button id="helpFlowReviewButton" class="ghost-button" type="button">Open Insights</button></div></section>
+        <div class="help-shortcuts"><h3>Useful shortcuts</h3><p><kbd>⌘ / Ctrl N</kbd> New activity <span>·</span> <kbd>/</kbd> Search <span>·</span> <kbd>⌘ / Ctrl Enter</kbd> Save <span>·</span> <kbd>Esc</kbd> Cancel an edit</p></div>
+        <div class="help-advice"><h3>Habits that make reports better</h3><ul><li>Write the result in one sentence and include a next step when work is unfinished.</li><li>Link repeated sessions to the same task; old unlinked logs are still grouped by their wording.</li><li>Pause the timer when switching work. Leave duration empty when you do not know it.</li><li>Review the longest task bars before planning the next day; they show time spent, not quality or progress.</li></ul></div>
+      </section>
+    </div>
+    <footer class="help-footer"><label class="help-skip"><input id="skipWelcomeCheckbox" type="checkbox"> Don't show this on startup</label><button id="helpDoneButton" class="primary-button" type="button">Start using Tavri</button></footer>
+  </dialog>
+  <script src="./entry-domain.cjs"></script>
+  <script src="./activity-templates.cjs"></script>
+  <script src="./activity-views.cjs"></script>
+  <script src="./team-reports-ui.cjs"></script>
+  <script src="./theme-symbols.cjs"></script>
+  <script src="./appearance-themes.cjs"></script>
+  <script src="./i18n.cjs"></script>
+  <script src="./renderer.cjs"></script>
+</body>
 </html>
