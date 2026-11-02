@@ -136,7 +136,7 @@ test_help_and_version() {
 
   run_tavri "$TEST_TMPDIR" version
   assert_status 0 || return 1
-  assert_eq "tavri 0.3.0" "$LAST_OUTPUT"
+  assert_eq "tavri 0.4.0" "$LAST_OUTPUT"
 }
 
 test_command_help_aliases_are_consistent() {
@@ -259,7 +259,7 @@ test_legacy_week_aliases() {
 }
 
 test_config_uses_resolved_values() {
-  local expected="version=0.3.0
+  local expected="version=0.4.0
 log_dir=${TEST_TMPDIR}
 current_week=${TEST_WEEK_BEGIN}
 current_file=${TEST_TMPDIR}/${TEST_WEEK_BEGIN}.log"
@@ -383,7 +383,7 @@ test_macos_installer_smoke() {
   assert_file_nonempty "${app_dir}/Tavri.app/Contents/Info.plist" || return 1
   assert_file_nonempty "${app_dir}/Tavri.app/Contents/Resources/tavri-icon.icns" || return 1
 
-  assert_eq "tavri 0.3.0" "$("${bin_dir}/tavri" version)"
+  assert_eq "tavri 0.4.0" "$("${bin_dir}/tavri" version)"
 }
 
 run_test() {
