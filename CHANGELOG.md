@@ -4,6 +4,14 @@ All notable changes to `Tavri` will be documented in this file.
 
 ## Unreleased
 
+## 0.5.0 - 2026-11-20
+
+- Give Today and Activity clearly different visual contexts: Today is the live plan and focus workspace, while Activity is the durable weekly record used for Friday timesheets, reports and exports
+- Add an explicit Planned → In progress → Done focus flow; starting work automatically creates one linked In progress journal entry and completing the outcome updates that same entry to Done without duplicates
+- Show In progress and Done status chips in Activity, keep automatic status markers out of the linked-session count, and preserve compatibility with existing focus plans and readable weekly log files
+- Add localized workflow labels and explanations in English, Polish, German, Spanish, French and Portuguese
+- Cover status round-tripping, idempotent log updates and the complete native Electron workflow with automated tests
+
 ## 0.4.0 - 2026-11-02
 
 - Add six interface languages (English, Polish, German, Spanish, French and Portuguese), a flag switcher in the top bar, a Settings selector, localized dates and widget controls, and a small CGI mark

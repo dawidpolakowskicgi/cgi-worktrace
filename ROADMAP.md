@@ -6,6 +6,10 @@ Data audytu: **29 października 2026**. Wersja w `package.json`: **0.3.0**. Punk
 
 Dokument jest planem do realizacji. Status wykonanych zmian opisuje aktualizacja poniżej; pozostałe zadania czekają na realizację. Numery wersji przy etapach są propozycją; ukończenie etapu wyznaczają kryteria odbioru.
 
+## Aktualizacja 0.5.0 · 20 listopada 2026
+
+Widoki Today i Activity otrzymały osobne role oraz wyraźnie różne konteksty wizualne. Today jest planem dnia i miejscem rozpoczęcia pracy, natomiast Activity jest trwałym tygodniowym dziennikiem używanym do piątkowego timesheetu, raportów i eksportu. Rozpoczęcie zaplanowanego celu automatycznie zapisuje pojedynczy wpis `In progress` powiązany stabilnym identyfikatorem zadania, a oznaczenie celu jako ukończony aktualizuje ten sam wpis do `Done`. Ponowne rozpoczęcie nie tworzy duplikatów. Automatyczne znaczniki statusu są widoczne w logu, ale nie zwiększają liczby sesji prezentowanej w grupowaniu czasu zadania.
+
 ## Migracja danych i języki — 31.10.2026
 
 Osobiste pliki użytkownika z `~/Documents/worktrace` zostały skopiowane do `~/Documents/tavri` w kanonicznym formacie nazw `YYYY-MM-DD.log`. Dwanaście plików źródłowych zawierało 65 wierszy; 12 stanowiło dokładną kopię tygodnia `2026-W13`, dlatego wynik to 53 unikalne aktywności w 11 tygodniach. Oryginały pozostały nienaruszone. Manifest migracji zawiera sumy SHA-256 plików źródłowych. Tavri wskazuje teraz nowy katalog i odczytuje wszystkie 53 aktywności; po ponownym uruchomieniu aplikacja użyje go domyślnie. Wpisom bez godziny nie dopisano fikcyjnego czasu.

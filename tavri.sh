@@ -9,7 +9,7 @@ set -euo pipefail
 # Each week is stored as: YYYY-MM-DD.log (the Monday of that ISO week)
 # Entry format: YYYY-MM-DD <message>
 
-readonly TAVRI_VERSION="0.4.0"
+readonly TAVRI_VERSION="0.5.0"
 has_week_logs() {
   local file
   for file in "$1"/????-??-??.log "$1"/????-W??.log; do
