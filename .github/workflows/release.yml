@@ -92,7 +92,8 @@ jobs:
         shell: bash
         run: |
           output_dir="$(mktemp -d)"
-          ./scripts/prepare-release.sh v0.0.0-test "$output_dir"
+          version="$(node -p "require('./package.json').version")"
+          ./scripts/prepare-release.sh "v${version}" "$output_dir"
           test -f "$output_dir/install.sh"
           test -f "$output_dir/install-macos.sh"
           test -f "$output_dir/install.ps1"

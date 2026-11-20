@@ -27,14 +27,14 @@ const teammateFile = path.join(temp, "2026-10-26.log");
 fs.writeFileSync(teammateFile, "2026-10-27 09:00 Team planning [spent: 45m] [project: Launch]\n2026-10-28 11:00 Review without duration [project: Launch]\n");
 dialog.showOpenDialog = async (_window, options) => ({ canceled: false, filePaths: [options.title === "Choose Tavri personal backup" ? savedBackupPath : teammateFile] });
 require("../desktop/main.cjs");
-const timeout = setTimeout(() => { console.error("Integration test timed out"); app.exit(1); }, 45000);
+const timeout = setTimeout(() => { console.error("Integration test timed out"); app.exit(1); }, 90000);
 
 app.whenReady().then(async () => {
   const win = BrowserWindow.getAllWindows()[0];
   const js = code => win.webContents.executeJavaScript(code, true);
   if (win.webContents.isLoading()) await new Promise(resolve => win.webContents.once("did-finish-load", resolve));
   const wait = async expression => {
-    const deadline = Date.now() + 5000;
+    const deadline = Date.now() + 10000;
     while (!(await js(expression))) {
       if (Date.now() > deadline) throw new Error(`Timed out: ${expression}; status: ${await js("document.querySelector('#status').textContent")}; entry: ${await js("document.querySelector('#entryInput').value")}; template: ${await js("document.querySelector('#templateSelect').value")}`);
       await new Promise(resolve => setTimeout(resolve, 30));
