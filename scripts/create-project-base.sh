@@ -119,7 +119,7 @@ EOF
 write_text_file "$TARGET_DIR/package.json" <<'EOF'
 {
   "name": "__APP_SLUG__",
-  "version": "0.5.0",
+  "version": "0.5.1",
   "description": "__APP_DESCRIPTION__",
   "license": "MIT",
   "main": "desktop/main.cjs",

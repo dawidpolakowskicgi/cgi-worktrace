@@ -104,7 +104,7 @@ test("report CSV escapes spreadsheet formulas and includes prior-period totals",
 });
 
 test("update checker accepts only a newer Tavri release from the configured repository", () => {
-  const release = (tag, name, url = `https://github.com/dawidpolakowskicgi/CGITART/releases/tag/${tag}`) =>
+  const release = (tag, name, url = `https://github.com/dawidpolakowskicgi/cgi-worktrace/releases/tag/${tag}`) =>
     ({ tag_name: tag, draft: false, prerelease: false, html_url: url, assets: [{ name }] });
   const result = selectTavriRelease([
     release("v0.4.0", "Tavri-0.4.0-arm64.dmg", "https://example.com/redirect"),
@@ -113,4 +113,5 @@ test("update checker accepts only a newer Tavri release from the configured repo
   ], "0.3.0");
   assert.equal(result.latest, "v0.3.1");
   assert.equal(result.updateAvailable, true);
+  assert.equal(selectTavriRelease([release("v0.3.2", "Tavri-0.3.2-arm64.dmg", "https://github.com/dawidpolakowskicgi/CGITART/releases/tag/v0.3.2")], "0.3.1").latest, "v0.3.2");
 });

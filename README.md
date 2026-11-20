@@ -215,11 +215,11 @@ The generator creates a separate Electron starter with its own app name and data
 ## Local release packaging
 
 ```bash
-./scripts/prepare-release.sh v0.5.0 /tmp/tavri-release
+./scripts/prepare-release.sh v0.5.1 /tmp/tavri-release
 npm run package:mac
 ```
 
-The first command creates source archives, installers and SHA256 checksums locally. The second creates a standalone macOS `.app` and `.dmg` in `dist/` with the Electron runtime, Tavri icon and license, and verifies key files inside the packaged ASAR. It is unsigned by default. For a signed and notarized build, install a Developer ID Application certificate, store notarization credentials in Keychain with `xcrun notarytool store-credentials`, then set `TAVRI_MAC_SIGN_IDENTITY` and `TAVRI_MAC_NOTARY_PROFILE` when running `npm run package:mac`. The script verifies the code signature and stapled ticket before creating the DMG. **Check for updates** in Settings queries GitHub releases only when clicked and opens a verified Tavri release page; it does not install updates automatically. `TAVRI_REPOSITORY` can override the repository used in generated source download URLs; otherwise the source packager uses `GITHUB_REPOSITORY`, falling back to the existing configured project name `dawidpolakowskicgi/CGITART`.
+The first command creates source archives, installers and SHA256 checksums locally. The second creates a standalone macOS `.app` and `.dmg` in `dist/` with the Electron runtime, Tavri icon and license, and verifies key files inside the packaged ASAR. It is unsigned by default. For a signed and notarized build, install a Developer ID Application certificate, store notarization credentials in Keychain with `xcrun notarytool store-credentials`, then set `TAVRI_MAC_SIGN_IDENTITY` and `TAVRI_MAC_NOTARY_PROFILE` when running `npm run package:mac`. The script verifies the code signature and stapled ticket before creating the DMG. **Check for updates** in Settings queries GitHub releases only when clicked and opens a verified Tavri release page; it does not install updates automatically. `TAVRI_REPOSITORY` can override the repository used in generated source download URLs; otherwise the source packager uses `GITHUB_REPOSITORY`, falling back to the canonical repository `dawidpolakowskicgi/cgi-worktrace`.
 
 Standalone installers require an explicit `TAVRI_RAW_URL`, `TAVRI_MACOS_ARCHIVE_URL` or PowerShell `-SourceUrl`, unless produced by the release packager. This avoids downloading an older Worktrace build under the new name.
 

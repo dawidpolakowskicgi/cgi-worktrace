@@ -4,6 +4,11 @@ All notable changes to `Tavri` will be documented in this file.
 
 ## Unreleased
 
+## 0.5.1 - 2026-11-20
+
+- Point release checks and generated installer URLs at the repository's canonical `dawidpolakowskicgi/cgi-worktrace` location after its GitHub move
+- Continue accepting the legacy `CGITART` release URL so existing redirected metadata remains compatible
+
 ## 0.5.0 - 2026-11-20
 
 - Give Today and Activity clearly different visual contexts: Today is the live plan and focus workspace, while Activity is the durable weekly record used for Friday timesheets, reports and exports
