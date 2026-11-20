@@ -59,10 +59,11 @@ function parseEntryMessage(message) {
     reference: "",
     timeSpent: "",
     taskId: "",
+    status: "",
   };
 
   while (true) {
-    const match = /\s+\[(spent|project|ref|task): ([^\]]+)\]$/.exec(result.message);
+    const match = /\s+\[(spent|project|ref|task|status): ([^\]]+)\]$/.exec(result.message);
 
     if (!match) {
       return result;
@@ -76,6 +77,8 @@ function parseEntryMessage(message) {
       result.reference = match[2].trim();
     } else if (match[1] === "task" && !result.taskId && /^[a-f0-9-]{36}$/.test(match[2].trim())) {
       result.taskId = match[2].trim();
+    } else if (match[1] === "status" && !result.status && ["in-progress", "done"].includes(match[2].trim())) {
+      result.status = match[2].trim();
     } else {
       return result;
     }
@@ -84,7 +87,7 @@ function parseEntryMessage(message) {
   }
 }
 
-function buildEntryMessage(message, timeSpent, project, reference, taskId = "") {
+function buildEntryMessage(message, timeSpent, project, reference, taskId = "", status = "") {
   const cleanMessage = String(message || "").trim();
   const cleanTimeSpent = String(timeSpent || "").trim();
   const cleanProject = String(project || "").trim();
@@ -104,6 +107,7 @@ function buildEntryMessage(message, timeSpent, project, reference, taskId = "") 
   }
 
   if (/^[a-f0-9-]{36}$/.test(taskId)) segments.push(`[task: ${taskId}]`);
+  if (["in-progress", "done"].includes(status)) segments.push(`[status: ${status}]`);
 
   return segments.join(" ");
 }
@@ -156,7 +160,8 @@ function buildTaskTimeData(entries, timer = null) {
     const detail = parseEntryMessage(entry.message);
     const task = record(detail.message, detail.project, detail.reference, detail.taskId);
     const minutes = parseSpentToMinutes(detail.timeSpent);
-    task.activities += 1;
+    // Automatic task-state markers belong in the journal, but they are not work sessions.
+    if (!detail.status) task.activities += 1;
     if (Number.isFinite(minutes) && minutes > 0) {
       task.loggedMinutes += minutes; task.timedEntries += 1;
       loggedMinutes += minutes; timedEntries += 1;
@@ -181,7 +186,7 @@ function filterEntries(entries, filters = {}) {
     return (!filters.start || entry.date >= filters.start)
       && (!filters.end || entry.date <= filters.end)
       && (!filters.project || meta.project === filters.project)
-      && (!query || [meta.message, meta.project, meta.reference, entry.date, entry.time].join(" ").toLocaleLowerCase().includes(query));
+      && (!query || [meta.message, meta.project, meta.reference, meta.status, entry.date, entry.time].join(" ").toLocaleLowerCase().includes(query));
   });
 }
 

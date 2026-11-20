@@ -5,7 +5,9 @@ const { parseEntryMessage, buildEntryMessage, parseSpentToMinutes, formatSpentMi
 
 test("metadata round-trips without leaking into the activity description", () => {
   const text = buildEntryMessage("Shipped UI", "1h 30m", "Tavri", "APP-42");
-  assert.deepEqual(parseEntryMessage(text), { message: "Shipped UI", timeSpent: "1h 30m", project: "Tavri", reference: "APP-42", taskId: "" });
+  assert.deepEqual(parseEntryMessage(text), { message: "Shipped UI", timeSpent: "1h 30m", project: "Tavri", reference: "APP-42", taskId: "", status: "" });
+  const statusText = buildEntryMessage("Ship UI", "", "Tavri", "APP-42", "a53f463d-2d28-4a6e-b6b7-52ebd3188b0c", "in-progress");
+  assert.equal(parseEntryMessage(statusText).status, "in-progress");
   assert.equal(parseEntryMessage("Discuss [project: example] in documentation").message, "Discuss [project: example] in documentation");
 });
 test("durations reject partial, negative and nonnumeric input", () => {

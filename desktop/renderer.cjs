@@ -393,7 +393,7 @@ function createTavriRenderer({ document: doc, api, initialView = "week" }) {
   }
   function endEditing(restore = true) {
     editing = null;
-    $("composerTitle").textContent = "Log an activity";
+    $("composerTitle").textContent = view === "today" ? "Record today's progress" : "Add to weekly activity";
     $("entrySubmitButton").textContent = "+ Add activity";
     $("composerFooter").hidden = true;
     $("templateGuide").hidden = false;
@@ -450,6 +450,7 @@ function createTavriRenderer({ document: doc, api, initialView = "week" }) {
       if (meta.timeSpent) details.append(el("span", "chip chip--duration", `◷ ${meta.timeSpent}`));
       if (meta.project) details.append(el("span", "chip chip--project", meta.project));
       if (meta.reference) details.append(el("span", "chip", meta.reference));
+      if (meta.status) details.prepend(el("span", `chip chip--status chip--${meta.status}`, meta.status === "done" ? "Done" : "In progress"));
       if (!entry.valid) details.append(el("span", "chip", "Unrecognised format · edit in Settings"));
       if (details.childNodes.length) content.append(details);
       const actions = el("div", "entry-actions");
@@ -600,7 +601,11 @@ function createTavriRenderer({ document: doc, api, initialView = "week" }) {
     for (const date of days) {
       const day = entries.filter(entry => entry.date === date);
       lines.push(`${date}: ${day.length ? `${day.length} ${day.length === 1 ? "activity" : "activities"}` : "no entries recorded"}`);
-      for (const entry of day.slice(0, 3)) lines.push(`  • ${parseEntryMessage(entry.message).message}`);
+      for (const entry of day.slice(0, 3)) {
+        const meta = parseEntryMessage(entry.message);
+        const status = meta.status === "done" ? "Done · " : meta.status === "in-progress" ? "In progress · " : "";
+        lines.push(`  • ${status}${meta.message}`);
+      }
       if (day.length > 3) lines.push(`  • …and ${day.length - 3} more`);
     }
     await perform(async () => { await api.copyText(lines.join("\n") + "\n"); setStatus("Week summary copied to clipboard."); });
@@ -663,18 +668,38 @@ function createTavriRenderer({ document: doc, api, initialView = "week" }) {
     $("taskSelect").replaceChildren(...options);
     $("taskSelect").value = selected;
   }
-  function useFocusTask(task) {
+  async function useFocusTask(task) {
     if (editing) { setStatus("Finish editing the current activity before choosing a focus task.", "error"); return; }
     if (timerState && $("taskSelect").value !== task.id) { setStatus("Use or discard the current timer before switching tasks.", "error"); return; }
     $("taskSelect").value = task.id;
     if (!$("entryInput").value.trim()) $("entryInput").value = task.title;
     if (!$("projectInput").value.trim()) $("projectInput").value = task.project;
     if (!$("referenceInput").value.trim()) $("referenceInput").value = task.reference;
+    persistDraft();
     if (!timerState) startTimer();
     else if (timerState.runningSince === null) resumeTimer();
+    const recorded = await perform(async () => {
+      const result = await api.recordFocusStatus(task.id, "in-progress", state.today.date, focusState.revision);
+      focusState = result.focus;
+      renderState(result.journal);
+    });
+    if (!recorded) return;
     persistDraft(); renderFocus();
     $("entryInput").focus();
     $("composer").scrollIntoView({ block: "nearest" });
+  }
+  async function transitionFocusTask(task, status) {
+    if (status === "done" && timerState && $("taskSelect").value === task.id) {
+      setStatus("Save or discard the active timer before marking this outcome done.", "error");
+      return;
+    }
+    await perform(async () => {
+      const result = await api.recordFocusStatus(task.id, status, state.today.date, focusState.revision);
+      focusState = result.focus;
+      renderState(result.journal);
+      renderTaskOptions(); updateWidgetState();
+      setStatus(status === "done" ? "Outcome completed and recorded in Activity." : "Work started and recorded as In progress in Activity.");
+    });
   }
   async function updateFocusTask(task, patch) {
     if (!api.updateFocusTask) return;
@@ -690,17 +715,20 @@ function createTavriRenderer({ document: doc, api, initialView = "week" }) {
     const today = state.today.date;
     const todayTasks = focusState.tasks.filter(task => task.plannedFor === today);
     const open = todayTasks.filter(task => task.status === "open");
+    const inProgress = open.filter(task => task.startedAt);
+    const planned = open.filter(task => !task.startedAt);
     const done = todayTasks.filter(task => task.status === "done");
-    $("focusSummary").textContent = `${done.length} ${t("done")} · ${open.length} ${t("open")}`;
+    $("focusSummary").textContent = `${planned.length} ${t("planned")} · ${inProgress.length} ${t("in progress")} · ${done.length} ${t("done")}`;
     $("focusForm").querySelector("button").disabled = busy || open.length >= 3;
     $("focusStatus").textContent = t(open.length >= 3 ? "Three open outcomes are enough for today. Finish one or move it before adding another." :
       !todayTasks.length ? "Start with one result you want to achieve today." : "At the end of the day, save your activity and choose the next step for unfinished work.");
     const todayEntries = state.today.entries;
     $("focusTasks").replaceChildren(...todayTasks.map(task => {
-      const card = el("article", `focus-task${task.status === "done" ? " is-done" : ""}`);
+      const active = task.status === "open" && Boolean(task.startedAt);
+      const card = el("article", `focus-task${task.status === "done" ? " is-done" : active ? " is-progress" : " is-planned"}`);
       card.dataset.taskId = task.id;
       const heading = el("div", "focus-task-heading");
-      heading.append(el("strong", "", task.title), el("span", "", task.status === "done" ? "Done" : "Open"));
+      heading.append(el("strong", "", task.title), el("span", "focus-task-status", task.status === "done" ? "Done" : active ? "In progress" : "Planned"));
       const metadata = [task.project, task.reference].filter(Boolean).join(" · ");
       if (metadata) card.append(heading, el("p", "focus-task-meta", metadata)); else card.append(heading);
       const related = todayEntries.filter(entry => parseEntryMessage(entry.message).taskId === task.id);
@@ -712,7 +740,7 @@ function createTavriRenderer({ document: doc, api, initialView = "week" }) {
       next.append(nextInput, button("Save step", () => updateFocusTask(task, { nextStep: nextInput.value }), "text-button"));
       card.append(next);
       const actions = el("div", "focus-task-actions");
-      if (task.status === "open") actions.append(button(timerState && $("taskSelect").value === task.id && timerState.runningSince !== null ? "Continue session" : "Start session", () => useFocusTask(task), "primary-button"));
+      if (task.status === "open") actions.append(button(timerState && $("taskSelect").value === task.id && timerState.runningSince !== null ? "Continue session" : active ? "Continue work" : "Start work", () => useFocusTask(task), "primary-button"));
       actions.append(button("Edit outcome", () => {
         if (card.querySelector(".focus-task-editor")) { card.querySelector(".focus-task-editor input")?.focus(); return; }
         const editor = el("div", "focus-task-editor");
@@ -724,7 +752,7 @@ function createTavriRenderer({ document: doc, api, initialView = "week" }) {
         buttons.append(button("Save outcome", () => updateFocusTask(task, { title: inputs.title.value, project: inputs.project.value, reference: inputs.reference.value }), "primary-button"), button("Cancel", () => editor.remove(), "ghost-button"));
         editor.append(buttons); card.append(editor); inputs.title.focus();
       }, "text-button"));
-      actions.append(button(task.status === "done" ? "Reopen" : "Mark done", () => updateFocusTask(task, { status: task.status === "done" ? "open" : "done" }), "ghost-button"));
+      actions.append(button(task.status === "done" ? "Reopen" : "Mark done", () => task.status === "done" ? updateFocusTask(task, { status: "open", startedAt: "" }) : transitionFocusTask(task, "done"), "ghost-button"));
       if (task.status === "open") actions.append(button("Move to tomorrow", () => updateFocusTask(task, { plannedFor: shiftedDate(today, 1) }), "text-button"));
       card.append(actions);
       return card;
@@ -818,6 +846,7 @@ function createTavriRenderer({ document: doc, api, initialView = "week" }) {
     if (!viewTitles[next] || (next === "team" && workspaceMode !== "team")) return;
     if (next !== "week" && doc.fullscreenElement === $("timelinePanel")) void doc.exitFullscreen().catch(() => {});
     view = next;
+    $("workspace").dataset.view = view;
     if (next === "reports" && selectedRange) {
       const key = `${selectedRange.start}/${selectedRange.end}`;
       if (reportRangeKey !== key) { teamReports.setPeriod(selectedRange.start, selectedRange.end); reportRangeKey = key; }
@@ -825,8 +854,14 @@ function createTavriRenderer({ document: doc, api, initialView = "week" }) {
     doc.querySelectorAll(".tab").forEach(tab => { tab.classList.toggle("is-active", tab.dataset.view === view); if (tab.dataset.view === view) tab.setAttribute("aria-current", "page"); else tab.removeAttribute("aria-current"); });
     doc.querySelectorAll(".view").forEach(section => section.classList.toggle("is-active", section.id === `${view}View`));
     $("viewTitle").textContent = viewTitles[view];
+    $("viewEyebrow").textContent = view === "today" ? "Plan · focus · record" : view === "week" ? "Weekly timesheet record" : "Your work at a glance";
     $("viewSubtitle").textContent = { week: "A clear record of what moved forward.", today: "Capture progress while it is fresh.", archive: "Find work across every local week.", changes: "See when entries were added, edited and moved.", diagram: "Understand and review your week.", reports: "Turn activities into a clear, configurable overview.", team: "See your team's shared weekly records in one place.", edit: "A workspace that fits the way you work." }[view];
+    $("viewContext").hidden = !["today", "week"].includes(view);
+    $("viewContextLabel").textContent = view === "today" ? "LIVE WORKSPACE" : "SAVED RECORD";
+    $("viewContextTitle").textContent = view === "today" ? "Decide what matters, then start the work." : "Your week, ready for Friday's timesheet.";
+    $("viewContextText").textContent = view === "today" ? "Planned outcomes stay here. Starting work records In progress in Activity; completing it updates the record to Done." : "Activity contains durable log entries used by Insights, reports, copy and export. Review this record before submitting your timesheet.";
     $("composer").hidden = !["week", "today"].includes(view);
+    if (!editing) $("composerTitle").textContent = view === "today" ? "Record today's progress" : "Add to weekly activity";
     $("focusSection").hidden = view !== "today";
     $("metrics").hidden = ["edit", "reports", "team", "archive", "changes"].includes(view);
     $("periodToolbar").hidden = ["today", "reports", "team", "archive", "changes"].includes(view);
@@ -909,7 +944,8 @@ function createTavriRenderer({ document: doc, api, initialView = "week" }) {
       if (timerState && !editing) draft.timeSpentInput = durationWithTimer(draft.timeSpentInput);
     } catch (error) { setStatus(error.message, "error"); $("entryDetails").open = true; return; }
     await perform(async () => {
-      const message = buildEntryMessage(draft.entryInput, draft.timeSpentInput, draft.projectInput, draft.referenceInput, draft.taskSelect);
+      const preservedStatus = editing ? parseEntryMessage(editing.entry.message).status : "";
+      const message = buildEntryMessage(draft.entryInput, draft.timeSpentInput, draft.projectInput, draft.referenceInput, draft.taskSelect, preservedStatus);
       const wasEditing = Boolean(editing);
       const result = editing
         ? await api.editEntry(editing.ref, { id: editing.entry.id, line: editing.entry.line }, draft.entryDateInput, draft.entryTimeInput, message, editing.revision)

@@ -14,6 +14,7 @@ function validateTask(task) {
     && typeof task.project === "string" && task.project.length <= 120
     && typeof task.reference === "string" && task.reference.length <= 240
     && typeof task.nextStep === "string" && task.nextStep.length <= 500
+    && (task.startedAt === undefined || task.startedAt === "" || typeof task.startedAt === "string" && !Number.isNaN(Date.parse(task.startedAt)))
     && isDateLiteral(task.plannedFor) && ["open", "done"].includes(task.status);
 }
 
@@ -63,7 +64,7 @@ class FocusStore {
     const id = randomUUID(), now = new Date().toISOString();
     return this.change(expectedRevision, tasks => {
       if (tasks.filter(task => task.plannedFor === plannedFor && task.status === "open").length >= 3) throw new Error("Keep up to three open outcomes per day. Finish or move one first.");
-      tasks.push({ id, title, project, reference, nextStep, plannedFor, status: "open", createdAt: now, updatedAt: now });
+      tasks.push({ id, title, project, reference, nextStep, plannedFor, status: "open", startedAt: "", createdAt: now, updatedAt: now });
     });
   }
 
@@ -81,8 +82,10 @@ class FocusStore {
       const title = input?.title === undefined ? task.title : clean(input.title, 200);
       const project = input?.project === undefined ? task.project : clean(input.project, 120);
       const reference = input?.reference === undefined ? task.reference : clean(input.reference, 240);
+      const startedAt = input?.startedAt === undefined ? (task.startedAt || "") : clean(input.startedAt, 40);
+      if (startedAt && Number.isNaN(Date.parse(startedAt))) throw new Error("Choose a valid task start time.");
       if (!title || [title, project, reference, nextStep].some(value => /[\r\n]/.test(value)) || [project, reference].some(value => /[\[\]]/.test(value))) throw new Error("Task details must stay on one line; project and reference cannot contain square brackets.");
-      Object.assign(task, { title, project, reference, plannedFor, status, nextStep, updatedAt: new Date().toISOString() });
+      Object.assign(task, { title, project, reference, plannedFor, status, startedAt, nextStep, updatedAt: new Date().toISOString() });
     });
   }
 }

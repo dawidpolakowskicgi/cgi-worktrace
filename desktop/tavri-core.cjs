@@ -2,7 +2,7 @@ const fs = require("node:fs/promises");
 const { readdirSync, statSync } = require("node:fs");
 const { revision, withWriteLock, atomicWrite } = require("./storage.cjs");
 const { randomUUID } = require("node:crypto");
-const { parseEntryMessage, parseSpentToMinutes, isDateLiteral, filterEntries } = require("./entry-domain.cjs");
+const { parseEntryMessage, parseSpentToMinutes, isDateLiteral, filterEntries, buildEntryMessage } = require("./entry-domain.cjs");
 const os = require("node:os");
 const path = require("node:path");
 
@@ -176,10 +176,10 @@ function escapeCsvCell(value) {
 }
 
 function formatEntriesAsCsv(entries) {
-  const rows = [["date", "time", "message", "duration_minutes", "project", "reference"]];
+  const rows = [["date", "time", "message", "status", "duration_minutes", "project", "reference"]];
   for (const entry of entries || []) {
     const meta = parseEntryMessage(entry.message);
-    rows.push([entry.date || "", entry.time || "", meta.message, meta.timeSpent ? parseSpentToMinutes(meta.timeSpent) || "" : "", meta.project, meta.reference]);
+    rows.push([entry.date || "", entry.time || "", meta.message, meta.status, meta.timeSpent ? parseSpentToMinutes(meta.timeSpent) || "" : "", meta.project, meta.reference]);
   }
 
   return `${rows.map((row) => row.map(escapeCsvCell).join(",")).join("\n")}\n`;
@@ -438,6 +438,41 @@ class TavriStore {
       line,
       filePath,
     };
+  }
+
+  async recordTaskStatus(task, status, date = "") {
+    const entryDate = String(date || this.todayDate()).trim();
+    if (!isDateLiteral(entryDate)) throw new TavriCoreError("Choose a valid status date.");
+    if (!task || !/^[a-f0-9-]{36}$/.test(task.id || "") || !String(task.title || "").trim()) throw new TavriCoreError("Choose a valid focus task.");
+    if (!["in-progress", "done"].includes(status)) throw new TavriCoreError("Choose a valid activity status.");
+    const message = buildEntryMessage(task.title, "", task.project, task.reference, task.id, status);
+    const weekRef = this.weekStart(entryDate);
+    await withWriteLock(this.logDir, async () => {
+      await this.recoverTransactionUnlocked();
+      const week = await this.readWeekUnlocked(weekRef);
+      const existing = week.entries.find(entry => entry.date === entryDate && (() => {
+        const meta = parseEntryMessage(entry.message);
+        return meta.taskId === task.id && Boolean(meta.status);
+      })());
+      const now = this.now();
+      const time = existing?.time || `${pad2(now.getHours())}:${pad2(now.getMinutes())}`;
+      const nextLine = `${entryDate} ${time} ${message}`;
+      if (existing?.line === nextLine) return;
+      const lines = week.text.split("\n");
+      if (existing) lines[Number(existing.id.split("-")[0])] = nextLine;
+      else lines.splice(lines.length - 1, 0, nextLine);
+      const nextText = normalizeLogText(lines.join("\n"));
+      const backupDir = path.join(this.logDir, ".backups");
+      await fs.mkdir(backupDir, { recursive: true });
+      await atomicWrite(path.join(backupDir, `${week.weekStart}.log`), week.text);
+      await this.commitTransactionUnlocked({ [week.weekStart]: nextText }, {
+        kind: existing ? "task-status-updated" : "task-status-added",
+        week: week.weekStart,
+        before: existing?.line || "",
+        after: nextLine,
+      });
+    });
+    return this.getState(entryDate);
   }
 
   async readWeekUnlocked(ref = "") {

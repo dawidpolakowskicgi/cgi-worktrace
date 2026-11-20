@@ -266,12 +266,15 @@ function defaultExportPath(week, format) {
 function buildWeekPdfHtml(week) {
   const entries = week.entries || [];
   const rows = entries.length
-    ? entries.map((entry) => `
+    ? entries.map((entry) => {
+      const meta = parseEntryMessage(entry.message);
+      const status = meta.status === "done" ? "Done" : meta.status === "in-progress" ? "In progress" : "";
+      return `
       <tr>
         <td>${escapeHtml(entry.date)}<br>${escapeHtml(entry.time)}</td>
-        <td>${escapeHtml(parseEntryMessage(entry.message).message)}<br><small>${escapeHtml([parseEntryMessage(entry.message).project, parseEntryMessage(entry.message).reference, parseEntryMessage(entry.message).timeSpent].filter(Boolean).join(" · "))}</small></td>
+        <td>${escapeHtml(meta.message)}<br><small>${escapeHtml([status, meta.project, meta.reference, meta.timeSpent].filter(Boolean).join(" · "))}</small></td>
       </tr>
-    `).join("")
+    `; }).join("")
     : `
       <tr>
         <td colspan="2" class="empty">No entries in this selection</td>
@@ -565,6 +568,19 @@ registerIpc("tavri:focus-create", (event, input, expectedRevision) => handleDesk
 registerIpc("tavri:focus-update", (event, id, input, expectedRevision) => handleDesktopAction(() => {
   if (event.sender !== mainWindow?.webContents) throw new TavriCoreError("Invalid window.");
   return focusStore.update(id, input, expectedRevision);
+}));
+registerIpc("tavri:focus-record-status", (event, id, status, date, expectedRevision) => handleDesktopAction(async () => {
+  if (event.sender !== mainWindow?.webContents) throw new TavriCoreError("Invalid window.");
+  const current = await focusStore.read();
+  if (current.revision !== expectedRevision) throw new TavriCoreError("The focus plan changed. Refresh and try again.");
+  const task = current.tasks.find(item => item.id === id);
+  if (!task) throw new TavriCoreError("This task no longer exists. Refresh the focus plan.");
+  const journal = await store.recordTaskStatus(task, status, date);
+  const alreadyCurrent = status === "done" ? task.status === "done" : task.status === "open" && Boolean(task.startedAt);
+  const focus = alreadyCurrent ? current : await focusStore.update(id, status === "done"
+    ? { status: "done" }
+    : { status: "open", startedAt: new Date().toISOString() }, current.revision);
+  return { focus, journal };
 }));
 registerIpc("tavri:widget-show", event => handleDesktopAction(() => {
   if (event.sender !== mainWindow?.webContents) throw new TavriCoreError("Invalid window.");

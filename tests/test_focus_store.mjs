@@ -44,6 +44,26 @@ test("linked sessions group by task ID while old logs remain readable", () => {
   assert.equal(parseEntryMessage("Old activity [spent: 10m]").taskId, "");
 });
 
+test("focus status is recorded once and moves from in progress to done", async () => {
+  const dir = await fs.mkdtemp(path.join(os.tmpdir(), "tavri-focus-status-"));
+  try {
+    const focus = new FocusStore(dir), journal = new TavriStore({ logDir: dir, today: "2026-10-31", now: () => new Date("2026-10-31T09:15:00") });
+    let plan = await focus.read();
+    plan = await focus.create({ title: "Ship status flow", project: "Tavri", reference: "APP-50", plannedFor: "2026-10-31" }, plan.revision);
+    const task = plan.tasks[0];
+    await journal.recordTaskStatus(task, "in-progress", "2026-10-31");
+    await journal.recordTaskStatus(task, "in-progress", "2026-10-31");
+    let entries = (await journal.readToday()).entries;
+    assert.equal(entries.length, 1);
+    assert.equal(parseEntryMessage(entries[0].message).status, "in-progress");
+    await journal.recordTaskStatus(task, "done", "2026-10-31");
+    entries = (await journal.readToday()).entries;
+    assert.equal(entries.length, 1);
+    assert.equal(parseEntryMessage(entries[0].message).status, "done");
+    assert.equal(parseEntryMessage(entries[0].message).taskId, task.id);
+  } finally { await fs.rm(dir, { recursive: true, force: true }); }
+});
+
 test("personal backup includes focus plan and restores it with weekly logs", async () => {
   const dir = await fs.mkdtemp(path.join(os.tmpdir(), "tavri-focus-backup-"));
   try {

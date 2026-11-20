@@ -176,7 +176,7 @@ app.whenReady().then(async () => {
   assert(!clipboard.readText().includes("Same activity"));
   await click('[data-format="csv"]'); await idle();
   const csv = fs.readFileSync(exportPath, "utf8");
-  assert(csv.includes("2026-10-28,10:00,Review,60,Other,"));
+  assert(csv.includes("2026-10-28,10:00,Review,,60,Other,"));
   assert(!csv.includes("Same activity"));
   console.log("PASS filtered clipboard and real CSV export");
   await click("#clearWeekFilterButton");
@@ -656,7 +656,10 @@ app.whenReady().then(async () => {
   assert.deepEqual(focusViolations, []);
   const focusId = await js("document.querySelector('#focusTasks .focus-task').dataset.taskId");
   await click("#focusTasks .focus-task .primary-button");
+  await idle();
   assert.equal(await js("document.querySelector('#taskSelect').value"), focusId);
+  assert.equal((fs.readFileSync(currentPath, "utf8").match(/\[status: in-progress\]/g) || []).length, 1);
+  assert.equal(await js("document.querySelector('#focusTasks .focus-task-status').textContent"), "In progress");
   await input("#entryInput", "Implemented the first part");
   await click("#showWidgetButton");
   const widget = BrowserWindow.getAllWindows().find(window => window !== win);
@@ -676,6 +679,7 @@ app.whenReady().then(async () => {
   assert(fs.readFileSync(currentPath, "utf8").includes(`[task: ${focusId}]`));
   await click('[data-view="today"]');
   await click("#focusTasks .focus-task .primary-button");
+  await idle();
   await input("#entryInput", "Verified the milestone");
   await click("#entrySubmitButton"); await idle();
   await click('[data-view="diagram"]');
@@ -684,6 +688,9 @@ app.whenReady().then(async () => {
   await click('[data-view="today"]');
   await click("#focusTasks .focus-task-actions .ghost-button"); await idle();
   assert((await js("document.querySelector('#focusSummary').textContent")).includes("1 done"));
+  const statusLog = fs.readFileSync(currentPath, "utf8");
+  assert.equal((statusLog.match(/\[status: done\]/g) || []).length, 1);
+  assert.equal((statusLog.match(/\[status: in-progress\]/g) || []).length, 0);
   console.log("PASS day plan, stable task links across sessions and always-on-top widget controls");
 
   await click('[data-view="week"]');

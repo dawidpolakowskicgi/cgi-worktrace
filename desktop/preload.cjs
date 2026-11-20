@@ -16,6 +16,7 @@ contextBridge.exposeInMainWorld("tavri", {
   getFocus: () => invoke("tavri:focus-get"),
   createFocusTask: (input, revision) => invoke("tavri:focus-create", input, revision),
   updateFocusTask: (id, input, revision) => invoke("tavri:focus-update", id, input, revision),
+  recordFocusStatus: (id, status, date, revision) => invoke("tavri:focus-record-status", id, status, date, revision),
   showWidget: () => invoke("tavri:widget-show"),
   updateWidget: state => invoke("tavri:widget-state-update", state),
   onWidgetCommand: callback => ipcRenderer.on("tavri:widget-command", (_event, command) => callback(command)),

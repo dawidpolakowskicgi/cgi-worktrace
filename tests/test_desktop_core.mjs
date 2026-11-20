@@ -91,7 +91,7 @@ await runTest("desktop export format helpers", () => {
     { date: "2026-04-29", message: "previous day" },
     { date: "2026-04-30", message: "fixed csv, pdf and txt" },
     { date: "2026-05-01", message: 'quoted "value"' },
-  ]), 'date,time,message,duration_minutes,project,reference\n2026-04-29,,previous day,,,\n2026-04-30,,"fixed csv, pdf and txt",,,\n2026-05-01,,"quoted ""value""",,,\n');
+  ]), 'date,time,message,status,duration_minutes,project,reference\n2026-04-29,,previous day,,,,\n2026-04-30,,"fixed csv, pdf and txt",,,,\n2026-05-01,,"quoted ""value""",,,,\n');
 });
 
 await runTest("desktop sorts week starts descending", () => {
@@ -285,7 +285,7 @@ await runTest("concurrent store instances do not lose entries", async () => with
 }));
 
 await runTest("CSV includes structured fields and safe formulas", () => {
-  assert.equal(formatEntriesAsCsv([{ date: "2026-04-30", time: "09:00", message: "=SUM(A1:A2) [spent: 1h 30m] [project: Tavri] [ref: APP-1]" }]), "date,time,message,duration_minutes,project,reference\n2026-04-30,09:00,'=SUM(A1:A2),90,Tavri,APP-1\n");
+  assert.equal(formatEntriesAsCsv([{ date: "2026-04-30", time: "09:00", message: "=SUM(A1:A2) [spent: 1h 30m] [project: Tavri] [ref: APP-1] [status: done]" }]), "date,time,message,status,duration_minutes,project,reference\n2026-04-30,09:00,'=SUM(A1:A2),done,90,Tavri,APP-1\n");
 });
 
 await runTest("CLI and desktop writers share the same lock", async () => withTempDir(async logDir => {
