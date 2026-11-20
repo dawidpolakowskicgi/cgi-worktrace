@@ -11,7 +11,7 @@ fi
 
 readonly VERSION_TAG="$1"
 output_dir_arg="$2"
-readonly RELEASE_REPOSITORY="${TAVRI_REPOSITORY:-${GITHUB_REPOSITORY:-dawidpolakowskicgi/CGITART}}"
+readonly RELEASE_REPOSITORY="${TAVRI_REPOSITORY:-${GITHUB_REPOSITORY:-dawidpolakowskicgi/cgi-worktrace}}"
 readonly RELEASE_URL_BASE="https://github.com/${RELEASE_REPOSITORY}/releases/download/${VERSION_TAG}"
 
 script_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
