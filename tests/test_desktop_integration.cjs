@@ -313,6 +313,7 @@ app.whenReady().then(async () => {
   };
   await pressFullButton();
   await wait("document.fullscreenElement?.id === 'timelinePanel'");
+  await wait("document.querySelector('#timelineFullscreenButton').getAttribute('aria-pressed') === 'true'");
   assert.equal(await js("document.querySelector('#timelineFullscreenButton').getAttribute('aria-pressed')"), "true");
   assert.equal(await count("#timelineSelection .entry"), 1);
   // This automated desktop session can enter HTML fullscreen but macOS never resolves
