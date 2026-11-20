@@ -1,0 +1,17 @@
+{
+  "name": "tavri",
+  "version": "0.5.0",
+  "description": "Tavri desktop starter generated from Tavri",
+  "license": "MIT",
+  "main": "desktop/main.cjs",
+  "scripts": {
+    "desktop": "electron .",
+    "start": "npm run desktop"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "devDependencies": {
+    "electron": "^42.4.1"
+  }
+}

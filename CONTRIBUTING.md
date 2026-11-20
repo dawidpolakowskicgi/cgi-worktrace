@@ -1,6 +1,6 @@
 # Contributing
 
-Thanks for helping improve `CGI Worktrace`.
+Thanks for helping improve `Tavri`.
 
 ## Before you start
 

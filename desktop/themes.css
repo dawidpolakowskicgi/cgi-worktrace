@@ -1,0 +1,365 @@
+/* Optional appearance layers. Layout and interaction remain in styles.css. */
+body[data-theme="contrast-dark"] {
+  color-scheme: dark;
+  --bg: #000000; --surface: #000000; --surface-soft: #141414;
+  --sidebar: #000000; --input: #000000;
+  --ink: #ffffff; --muted: #ededed; --line: #b8b8b8;
+  --accent: #ffff00; --accent-hover: #ffffff; --accent-ink: #000000;
+  --accent-soft: #202000; --danger: #ffbcbc; --focus: #00ffff;
+}
+body[data-theme="contrast-light"] {
+  color-scheme: light;
+  --bg: #ffffff; --surface: #ffffff; --surface-soft: #f0f0f0;
+  --sidebar: #ffffff; --input: #ffffff;
+  --ink: #000000; --muted: #222222; --line: #333333;
+  --accent: #003a8c; --accent-hover: #002557; --accent-ink: #ffffff;
+  --accent-soft: #e0edff; --danger: #910000; --focus: #75008a;
+}
+body[data-theme="contrast-amber"] {
+  color-scheme: dark;
+  --bg: #070500; --surface: #0d0900; --surface-soft: #201600;
+  --sidebar: #070500; --input: #070500;
+  --ink: #ffdf80; --muted: #f4ce71; --line: #cba64e;
+  --accent: #ffd166; --accent-hover: #ffe9b0; --accent-ink: #070500;
+  --accent-soft: #302000; --danger: #ffb6a6; --focus: #ffffff;
+}
+body[data-theme="star-trek"] {
+  color-scheme: dark;
+  --bg: #08070d; --surface: #11101c; --surface-soft: #272037;
+  --sidebar: #08070d; --input: #08070d;
+  --ink: #f6efff; --muted: #c9bddb; --line: #75628f;
+  --accent: #ffba85; --accent-hover: #ffdaa9; --accent-ink: #170b05;
+  --accent-soft: #362416; --danger: #ffb1b8; --focus: #b4e7ff;
+  --console-secondary: #c6b5ff;
+}
+body[data-theme="star-wars"] {
+  color-scheme: dark;
+  --bg: #080d17; --surface: #101a29; --surface-soft: #1a2b40;
+  --sidebar: #080d17; --input: #080d17;
+  --ink: #f4f5e9; --muted: #b8cbdf; --line: #657f99;
+  --accent: #ffe66b; --accent-hover: #fff1ad; --accent-ink: #171300;
+  --accent-soft: #34301b; --danger: #ffb6a7; --focus: #8cd8ff;
+  --console-secondary: #8cd8ff;
+}
+body[data-theme="rebel"] {
+  color-scheme: dark;
+  --bg: #071524; --surface: #10253b; --surface-soft: #183650;
+  --sidebar: #0a1b2b; --input: #0a1b2b;
+  --ink: #f5f4ed; --muted: #bed3df; --line: #7296aa;
+  --accent: #ff7765; --accent-hover: #ff9b88; --accent-ink: #23100b;
+  --accent-soft: #3b2325; --danger: #ffb0a8; --focus: #ffe0a2;
+}
+body[data-theme="mandalorian"] {
+  color-scheme: dark;
+  --bg: #101b19; --surface: #1a2c29; --surface-soft: #29403a;
+  --sidebar: #142420; --input: #142420;
+  --ink: #f2eee3; --muted: #c9d4ce; --line: #829e96;
+  --accent: #e0bd75; --accent-hover: #f2d799; --accent-ink: #1c1a11;
+  --accent-soft: #3a3422; --danger: #ffc4ad; --focus: #b9eacb;
+}
+body[data-theme="shire"] {
+  color-scheme: light;
+  --bg: #efe9d5; --surface: #fffaf0; --surface-soft: #e8dfc7;
+  --sidebar: #e1dcc6; --input: #fffaf0;
+  --ink: #292e23; --muted: #4d5947; --line: #8a9278;
+  --accent: #335e3c; --accent-hover: #234b2e; --accent-ink: #ffffff;
+  --accent-soft: #dbe8d5; --danger: #a03223; --focus: #7a3e17;
+}
+body[data-theme="mordor"] {
+  color-scheme: dark;
+  --bg: #120d0e; --surface: #211719; --surface-soft: #36201f;
+  --sidebar: #160e10; --input: #160e10;
+  --ink: #f5e8d3; --muted: #d3b6a5; --line: #976a5c;
+  --accent: #e59a55; --accent-hover: #ffba70; --accent-ink: #26100a;
+  --accent-soft: #452318; --danger: #ff9d87; --focus: #ffc767;
+}
+body[data-theme="hogwarts"] {
+  color-scheme: light;
+  --bg: #f3ead7; --surface: #fffaf1; --surface-soft: #eadbc2;
+  --sidebar: #e8ddc8; --input: #fffaf1;
+  --ink: #2c2222; --muted: #5c4d45; --line: #a48363;
+  --accent: #7a1c2b; --accent-hover: #621425; --accent-ink: #ffffff;
+  --accent-soft: #f1d9d4; --danger: #992f25; --focus: #2d5480;
+}
+body[data-theme="slytherin"] {
+  color-scheme: dark;
+  --bg: #0b1714; --surface: #13251f; --surface-soft: #1f3830;
+  --sidebar: #10201a; --input: #10201a;
+  --ink: #ebf4ee; --muted: #b9d3c5; --line: #719989;
+  --accent: #b7dbc6; --accent-hover: #d8f0e1; --accent-ink: #12231a;
+  --accent-soft: #244738; --danger: #ffc6b9; --focus: #d9f6e7;
+}
+body[data-theme="arrakis"] {
+  color-scheme: dark;
+  --bg: #1b1715; --surface: #2a231d; --surface-soft: #3d3025;
+  --sidebar: #211a17; --input: #211a17;
+  --ink: #f4e6cc; --muted: #dcc6a8; --line: #a48a6b;
+  --accent: #f3bf76; --accent-hover: #ffdaa0; --accent-ink: #281b12;
+  --accent-soft: #513723; --danger: #ffc0a1; --focus: #b9e3dd;
+}
+body[data-theme="winterfell"] {
+  color-scheme: dark;
+  --bg: #0f1822; --surface: #172736; --surface-soft: #263a49;
+  --sidebar: #14212c; --input: #14212c;
+  --ink: #eff4f4; --muted: #becbd3; --line: #8098a8;
+  --accent: #c7dde7; --accent-hover: #ebf5f8; --accent-ink: #11222f;
+  --accent-soft: #2c4652; --danger: #ffc1b5; --focus: #f3e6b2;
+}
+body[data-theme="pipboy"] {
+  color-scheme: dark;
+  --bg: #07150d; --surface: #0c2113; --surface-soft: #14371e;
+  --sidebar: #0a1a10; --input: #0a1a10;
+  --ink: #d5f7da; --muted: #a1d9ae; --line: #4a9b63;
+  --accent: #a9f0ae; --accent-hover: #d5ffd9; --accent-ink: #06130b;
+  --accent-soft: #1b4326; --danger: #ffd2ba; --focus: #e4ffbb;
+}
+body[data-theme="nightcity"] {
+  color-scheme: dark;
+  --bg: #10101a; --surface: #1b1b2d; --surface-soft: #2b2540;
+  --sidebar: #171627; --input: #171627;
+  --ink: #f9f4ff; --muted: #d4c5e3; --line: #8c70a9;
+  --accent: #ff79cc; --accent-hover: #ffabe0; --accent-ink: #231020;
+  --accent-soft: #41243b; --danger: #ffaf9f; --focus: #7af3ed;
+}
+.theme-gallery { display: grid; gap: 24px; padding: 10px 0 4px; }
+.theme-family { min-width: 0; margin: 0; padding: 0; border: 0; }
+.theme-family legend { padding: 0; color: var(--ink); font-size: 13px; font-weight: 600; }
+.theme-family-description { color: var(--muted); font-size: 11px; margin: 4px 0 12px; }
+.theme-family-choices { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 12px; }
+.theme-family:is([data-family="flight"], [data-family="fantasy"], [data-family="worlds"]) .theme-family-choices { grid-template-columns: repeat(2,minmax(0,1fr)); }
+.theme-choice { position: relative; display: flex; flex-direction: column; gap: 8px; padding: 10px; text-align: left; background: var(--bg); min-width: 0; }
+.theme-choice[aria-pressed="true"] { outline: 2px solid var(--accent-border, var(--accent)); outline-offset: 2px; }
+.theme-choice[aria-pressed="true"]::after { content: '✓'; position: absolute; right: 17px; top: 17px; background: var(--accent); color: var(--accent-ink); width: 21px; height: 21px; border: 1px solid var(--accent-ink); border-radius: 50%; text-align: center; font-size: 13px; font-weight: 700; }
+.theme-choice strong { font-size: 12px; font-weight: 600; padding: 0 3px; }
+.theme-choice-description { font-size: 11px; line-height: 1.6; color: var(--muted); padding: 0 3px 3px; }
+.theme-preview { position: relative; display: block; width: 100%; height: 78px; border: 1px solid var(--line); border-radius: 5px; background: var(--preview-background); overflow: hidden; }
+.theme-preview i { position: absolute; display: block; border-radius: 2px; }
+.preview-header { left: 0; right: 0; top: 0; height: 10px; background: var(--preview-panel); }
+.preview-sidebar { left: 5px; top: 15px; bottom: 5px; width: 20%; background: var(--preview-panel); }
+.preview-title { left: 29%; right: 37%; top: 18px; height: 4px; background: var(--preview-accent); }
+.preview-metric { left: 29%; right: 8%; top: 28px; height: 17px; border: 1px solid var(--preview-accent); }
+.preview-row { left: 29%; right: 8%; top: 51px; height: 6px; background: var(--preview-panel); border-left: 3px solid var(--preview-accent); }
+.preview-row-second { left: 29%; right: 8%; top: 62px; height: 6px; background: var(--preview-panel); border-left: 3px solid var(--preview-accent); }
+[data-theme-choice="star-trek"] .preview-header { left: 5px; top: 5px; height: 8px; border-radius: 12px 0 0; }
+[data-theme-choice="star-trek"] .preview-sidebar { border-radius: 0 0 0 15px; background: linear-gradient(to bottom,var(--preview-panel) 0 30%,var(--preview-background) 30% 35%,var(--preview-accent) 35% 65%,var(--preview-background) 65% 70%,var(--preview-panel) 70%); }
+[data-theme-choice="star-wars"] .theme-preview { border-radius: 0; border-color: var(--preview-accent); }
+[data-theme-choice="star-wars"] .preview-header { height: 2px; background: var(--preview-accent); }
+[data-theme-choice="star-wars"] .preview-sidebar { border: 1px solid var(--preview-panel); background: transparent; border-radius: 0; }
+[data-theme-choice="star-wars"] .preview-metric { border-radius: 0; border-top: 2px solid var(--preview-panel); }
+[data-theme-choice="rebel"] .theme-preview { border-radius: 0 7px 0 0; border-top: 3px solid var(--preview-accent); }
+[data-theme-choice="rebel"] .preview-sidebar { border-radius: 0; border-left: 3px solid var(--preview-accent); }
+[data-theme-choice="mandalorian"] .theme-preview { border-radius: 0; border-top: 3px solid var(--preview-accent); }
+[data-theme-choice="mandalorian"] .preview-metric { border-radius: 0; border-left-width: 4px; }
+[data-theme-choice="shire"] .theme-preview { border-radius: 11px; }
+[data-theme-choice="shire"] .preview-header { height: 5px; background: var(--preview-accent); }
+[data-theme-choice="shire"] .preview-metric { border-radius: 8px; }
+[data-theme-choice="mordor"] .theme-preview { border-radius: 0; border-bottom: 3px solid var(--preview-accent); }
+[data-theme-choice="mordor"] .preview-metric { border-top-width: 3px; border-radius: 0; }
+[data-theme-choice="hogwarts"] .theme-preview { border: 3px double var(--preview-accent); border-radius: 3px; }
+[data-theme-choice="hogwarts"] .preview-metric { border-radius: 1px; }
+[data-theme-choice="slytherin"] .theme-preview { border-radius: 0; border-left: 4px solid var(--preview-accent); }
+[data-theme-choice="slytherin"] .preview-row { border-left-width: 5px; }
+[data-theme-choice="arrakis"] .theme-preview { border-radius: 0 14px 0 14px; border-top: 3px solid var(--preview-accent); }
+[data-theme-choice="arrakis"] .preview-metric { border-radius: 0 6px 0 6px; }
+[data-theme-choice="winterfell"] .theme-preview { border-radius: 0; border-top: 3px double var(--preview-accent); }
+[data-theme-choice="winterfell"] .preview-header { background: var(--preview-accent); height: 3px; }
+[data-theme-choice="pipboy"] .theme-preview { border-radius: 0; border-color: var(--preview-accent); }
+[data-theme-choice="pipboy"] .preview-sidebar { border: 1px solid var(--preview-accent); background: transparent; }
+[data-theme-choice="nightcity"] .theme-preview { border-radius: 0; border-left: 4px solid var(--preview-accent); }
+[data-theme-choice="nightcity"] .preview-metric { border-right-width: 4px; border-radius: 0; }
+[data-theme-choice^="contrast-"] .preview-sidebar { background: transparent; border: 1px solid var(--preview-panel); }
+[data-theme-choice^="contrast-"] .preview-metric { border-width: 2px; }
+[data-theme-choice="system"] .theme-preview { background: linear-gradient(115deg,#f7f5f0 0 50%,#202524 50%); }
+#themeDescription { margin: 14px 0 20px; padding: 10px 12px; border-left: 2px solid var(--accent-border, var(--accent)); background: var(--bg); }
+body[data-theme="light"][data-accent="white"] [data-theme-choice="light"] .preview-title { background: #242B27; }
+body[data-theme="light"][data-accent="white"] [data-theme-choice="light"] .preview-metric { border-color: #242B27; }
+body[data-theme="light"][data-accent="white"] [data-theme-choice="light"] :is(.preview-row, .preview-row-second) { border-color: #242B27; }
+#themeSelect { max-width: 235px; }
+
+/* High contrast adds persistent boundaries, non-colour cues and a strong focus ring. */
+body[data-contrast="high"] input::placeholder { opacity: 1; }
+body[data-contrast="high"] :is(input, select, textarea, .entry, .composer, .metrics, .settings-card, .chart-card, .timeline-scroll, .timeline-bubble, .contributions-card) { border-width: 2px; }
+body[data-contrast="high"] :is(.tab.is-active, [role="tab"][aria-selected="true"]) { border: 2px solid var(--accent); text-decoration: underline; text-underline-offset: 4px; }
+body[data-contrast="high"] :is(.text-button, .entry-actions button) { text-decoration: underline; text-underline-offset: 3px; }
+body[data-contrast="high"] :focus-visible { outline: 3px solid var(--focus); outline-offset: 3px; }
+body[data-contrast="high"] .chip { border: 1px solid var(--line); }
+body[data-contrast="high"] .timeline-dot { width: 20px; height: 20px; min-width: 20px; border-color: var(--ink); }
+body[data-contrast="high"] .timeline-date-cell::before { border-color: var(--ink); }
+body[data-contrast="high"] .contribution-cell, body[data-contrast="high"] .heat-legend i { border: 1px solid var(--line); background-color: var(--surface); border-radius: 0; }
+body[data-contrast="high"] :is(.contribution-cell,.heat-legend i)[data-level="1"] { background-image: radial-gradient(var(--ink) 1px, transparent 1px); background-size: 5px 5px; }
+body[data-contrast="high"] :is(.contribution-cell,.heat-legend i)[data-level="2"] { background-image: repeating-linear-gradient(45deg, var(--ink) 0 1px, transparent 1px 4px); }
+body[data-contrast="high"] :is(.contribution-cell,.heat-legend i)[data-level="3"] { background-image: repeating-linear-gradient(0deg, var(--ink) 0 1px, transparent 1px 4px), repeating-linear-gradient(90deg, var(--ink) 0 1px, transparent 1px 4px); }
+body[data-contrast="high"] :is(.contribution-cell,.heat-legend i)[data-level="4"] { background: var(--accent); }
+body[data-contrast="high"] .contribution-cell[aria-pressed="true"] { outline: 3px solid var(--focus); outline-offset: 1px; }
+
+/* Connected rails and solid navigation blocks: original LCARS-inspired geometry. */
+body[data-theme="star-trek"] { --font-console: "Avenir Next Condensed", "Arial Narrow", var(--font-sans); }
+body[data-theme="star-trek"] .topbar { position: relative; padding-bottom: 16px; border: 0; background: var(--bg); }
+body[data-theme="star-trek"] .topbar::after { content: ''; position: absolute; bottom: 0; left: 18px; right: 20px; height: 9px; border-radius: 16px 0 0; background: linear-gradient(to right,var(--accent) 0 21%,var(--bg) 21% 21.6%,var(--console-secondary) 21.6% 70%,var(--bg) 70% 70.6%,#91b9eb 70.6% 91%,var(--bg) 91% 91.6%,var(--accent) 91.6%); }
+body[data-theme="star-trek"] .sidebar { border: 0; border-radius: 0; background: var(--bg); padding: 18px 12px 18px 18px; gap: 10px; }
+body[data-theme="star-trek"] .sidebar > .eyebrow { padding: 7px 12px; background: var(--accent); color: var(--accent-ink); border-radius: 22px 0 0; }
+body[data-theme="star-trek"] .tabs { gap: 6px; }
+body[data-theme="star-trek"] .tab { min-height: 48px; padding: 11px 12px; border: 2px solid transparent; border-radius: 0; color: #170b05; background: var(--console-secondary); font-family: var(--font-console); font-size: 17px; font-weight: 650; }
+body[data-theme="star-trek"] .tab:first-child { background: var(--accent); }
+body[data-theme="star-trek"] .tab:nth-child(3) { background: #91b9eb; }
+body[data-theme="star-trek"] .tab:nth-child(4) { background: #d9abd2; border-radius: 0 0 0 24px; }
+body[data-theme="star-trek"] .tab:hover { filter: brightness(1.12); }
+body[data-theme="star-trek"] .tab.is-active { border-color: var(--ink); box-shadow: inset -5px 0 var(--ink); }
+body[data-theme="star-trek"] .tab .nav-count { color: #170b05; border-color: #170b0566; font: 11px var(--font-mono); }
+body[data-theme="star-trek"] .sidebar-note { margin: 16px 0 0; padding: 16px 8px 0; }
+body[data-theme="star-trek"] .workspace { border-top: 12px solid var(--console-secondary); border-left: 10px solid var(--console-secondary); border-top-left-radius: 36px; margin-top: 12px; padding-top: 20px; }
+body[data-theme="star-trek"] .workspace-title h2 { font-family: var(--font-console); text-transform: uppercase; font-size: 32px; letter-spacing: .015em; color: var(--accent); }
+body[data-theme="star-trek"] :is(.eyebrow, .section-heading h3, .composer h3, .settings-card h3, .theme-family legend) { font-family: var(--font-console); letter-spacing: .045em; text-transform: uppercase; }
+body[data-theme="star-trek"] :is(.section-heading h3, .composer h3, .settings-card h3, .theme-family legend) { font-size: 15px; }
+body[data-theme="star-trek"] :is(.composer, .settings-card, .chart-card, .contributions-card, .timeline-scroll) { border-left: 6px solid var(--console-secondary); border-radius: 20px 0 0 0; }
+body[data-theme="star-trek"] .composer-heading { border-bottom: 3px solid var(--accent); padding-bottom: 8px; }
+body[data-theme="star-trek"] :is(.primary-button, .activity-tabs) { border-radius: 24px; }
+body[data-theme="star-trek"] .activity-tabs button { border-radius: 20px; }
+body[data-theme="star-trek"] .metrics { border: 0; border-radius: 0; background: var(--bg); gap: 6px; }
+body[data-theme="star-trek"] .metric { border: 0; border-top: 7px solid var(--console-secondary); background: var(--surface); }
+body[data-theme="star-trek"] .metric:first-child { border-left: 0; border-top-color: var(--accent); border-radius: 0; }
+body[data-theme="star-trek"] .metric:last-child { border-top-color: #91b9eb; }
+body[data-theme="star-trek"] .entry { border: 0; border-bottom: 1px solid var(--line); border-radius: 0; background: transparent; }
+body[data-theme="star-trek"] .entry-time { background: var(--console-secondary); color: #170b05; padding: 4px; text-align: center; border-radius: 4px 0 0 4px; }
+body[data-theme="star-trek"] .day-heading strong { color: var(--accent); }
+body[data-theme="star-trek"] .timeline-dot { background: var(--console-secondary); box-shadow: 0 0 0 1px var(--console-secondary); }
+body[data-theme="star-trek"] .contribution-cell[data-level="1"], body[data-theme="star-trek"] .heat-legend [data-level="1"] { background: #493656; }
+body[data-theme="star-trek"] .contribution-cell[data-level="2"], body[data-theme="star-trek"] .heat-legend [data-level="2"] { background: #81659c; }
+body[data-theme="star-trek"] .contribution-cell[data-level="3"], body[data-theme="star-trek"] .heat-legend [data-level="3"] { background: #c6b5ff; }
+body[data-theme="star-trek"] .contribution-cell[data-level="4"], body[data-theme="star-trek"] .heat-legend [data-level="4"] { background: #ffba85; }
+
+/* Restrained flight-terminal framing, with amber hierarchy and cool instrument lines. */
+body[data-theme="star-wars"] .workspace { background: var(--bg); }
+body[data-theme="star-wars"] .topbar { border-bottom: 1px solid var(--line); background: var(--bg); }
+body[data-theme="star-wars"] .sidebar { border-right: 1px solid var(--line); }
+body[data-theme="star-wars"] .workspace-title { border-bottom: 1px solid var(--line); padding-bottom: 14px; }
+body[data-theme="star-wars"] .workspace-title h2 { color: var(--accent); letter-spacing: .1em; text-transform: uppercase; font-size: 27px; }
+body[data-theme="star-wars"] :is(.eyebrow, .section-heading, .entry-time, .timeline-date-label) { font-family: var(--font-mono); }
+body[data-theme="star-wars"] :is(.composer, .settings-card, .chart-card, .timeline-scroll, .contributions-card) { position: relative; border-radius: 0; border: 1px solid var(--line); border-top: 3px solid var(--console-secondary); }
+body[data-theme="star-wars"] :is(.composer, .settings-card, .chart-card, .timeline-scroll, .contributions-card)::after { content: ''; position: absolute; right: -1px; bottom: -1px; width: 13px; height: 13px; border-right: 2px solid var(--console-secondary); border-bottom: 2px solid var(--console-secondary); pointer-events: none; }
+body[data-theme="star-wars"] :is(button, input, select, textarea, .activity-tabs, .search-field) { border-radius: 2px; }
+body[data-theme="star-wars"] .tab { border-radius: 0; border-left: 3px solid transparent; }
+body[data-theme="star-wars"] .tab.is-active { border-left-color: var(--accent); background: var(--accent-soft); }
+body[data-theme="star-wars"] .metrics { background: transparent; border-radius: 0; border: 0; gap: 8px; }
+body[data-theme="star-wars"] .metric { border: 1px solid var(--line); border-top: 3px solid var(--line); }
+body[data-theme="star-wars"] .metric:first-child { border-top-color: var(--accent); }
+body[data-theme="star-wars"] .metric strong { font-family: var(--font-mono); font-weight: 500; letter-spacing: -.06em; }
+body[data-theme="star-wars"] .entry { border-radius: 0; border: 0; border-left: 2px solid var(--line); border-bottom: 1px solid var(--line); background: transparent; }
+body[data-theme="star-wars"] .entry:hover { background: var(--surface); border-left-color: var(--console-secondary); }
+body[data-theme="star-wars"] .day-heading { text-transform: uppercase; letter-spacing: .04em; }
+body[data-theme="star-wars"] .primary-button { font-weight: 700; }
+body[data-theme="star-wars"] .timeline-dot { box-shadow: 0 0 0 1px var(--console-secondary); }
+body[data-theme="star-wars"] .contribution-cell[data-level="1"], body[data-theme="star-wars"] .heat-legend [data-level="1"] { background: #283d58; }
+body[data-theme="star-wars"] .contribution-cell[data-level="2"], body[data-theme="star-wars"] .heat-legend [data-level="2"] { background: #4a7496; }
+body[data-theme="star-wars"] .contribution-cell[data-level="3"], body[data-theme="star-wars"] .heat-legend [data-level="3"] { background: #8cd8ff; }
+body[data-theme="star-wars"] .contribution-cell[data-level="4"], body[data-theme="star-wars"] .heat-legend [data-level="4"] { background: #ffe66b; }
+
+/* Each world has its own framing while keeping the same controls and content. */
+body[data-theme="rebel"] .topbar { border-bottom: 3px solid var(--accent); }
+body[data-theme="rebel"] .sidebar { border-right: 2px solid var(--line); }
+body[data-theme="rebel"] .tab { border-radius: 0 8px 8px 0; border-left: 3px solid transparent; }
+body[data-theme="rebel"] .tab.is-active { border-left-color: var(--accent); }
+body[data-theme="rebel"] .workspace-title h2 { color: var(--accent); text-transform: uppercase; letter-spacing: .05em; }
+body[data-theme="rebel"] :is(.composer, .settings-card, .chart-card, .contributions-card, .timeline-scroll) { border-top: 3px solid var(--accent); border-radius: 2px 10px 2px 2px; }
+body[data-theme="rebel"] .metric { border-top: 3px solid var(--line); }
+body[data-theme="rebel"] .metric:first-child { border-top-color: var(--accent); }
+
+body[data-theme="mandalorian"] .topbar { border-bottom: 3px solid var(--accent); }
+body[data-theme="mandalorian"] .sidebar { border-right: 3px solid var(--line); }
+body[data-theme="mandalorian"] .tab { border-radius: 2px; border-left: 3px solid transparent; }
+body[data-theme="mandalorian"] .tab.is-active { border-left-color: var(--accent); }
+body[data-theme="mandalorian"] :is(.composer, .settings-card, .chart-card, .contributions-card, .timeline-scroll) { border-radius: 0 11px 0 11px; border-top: 2px solid var(--accent); }
+body[data-theme="mandalorian"] .metric { border-radius: 0 8px 0 8px; border-left: 3px solid var(--line); }
+body[data-theme="mandalorian"] .metric:first-child { border-left-color: var(--accent); }
+body[data-theme="mandalorian"] .entry { border-radius: 0; border-left: 2px solid var(--line); }
+
+body:is([data-theme="shire"], [data-theme="hogwarts"], [data-theme="winterfell"]) :is(.workspace-title h2, .section-heading h3, .composer h3, .settings-card h3, .theme-family legend) { font-family: Georgia, "Times New Roman", serif; }
+body[data-theme="shire"] .topbar { border-bottom: 3px solid var(--accent); }
+body[data-theme="shire"] :is(.composer, .settings-card, .chart-card, .contributions-card, .timeline-scroll) { border-radius: 16px; border-top: 3px solid var(--accent); }
+body[data-theme="shire"] .tab { border-radius: 14px; }
+body[data-theme="shire"] .metric { border-radius: 12px; }
+body[data-theme="shire"] .entry { border-left: 3px solid var(--line); }
+body[data-theme="shire"] .workspace-title h2 { color: var(--accent); }
+
+body[data-theme="mordor"] .topbar { border-bottom: 2px solid var(--accent); }
+body[data-theme="mordor"] .workspace-title h2 { color: var(--accent); letter-spacing: .04em; }
+body[data-theme="mordor"] .tab { border-radius: 0; border-left: 3px solid transparent; }
+body[data-theme="mordor"] .tab.is-active { border-left-color: var(--accent); }
+body[data-theme="mordor"] :is(.composer, .settings-card, .chart-card, .contributions-card, .timeline-scroll) { border-radius: 0; border-top: 3px solid var(--accent); }
+body[data-theme="mordor"] .metric { border-radius: 0; border-bottom: 2px solid var(--accent); }
+body[data-theme="mordor"] .entry { border-radius: 0; border-left: 2px solid var(--line); }
+
+body[data-theme="hogwarts"] .topbar { border-bottom: 3px double var(--accent); }
+body[data-theme="hogwarts"] .workspace-title h2 { color: var(--accent); }
+body[data-theme="hogwarts"] :is(.composer, .settings-card, .chart-card, .contributions-card, .timeline-scroll) { border-radius: 4px; border: 3px double var(--line); border-top-color: var(--accent); }
+body[data-theme="hogwarts"] .tab { border-radius: 3px; }
+body[data-theme="hogwarts"] .metric { border-top: 3px double var(--accent); }
+body[data-theme="hogwarts"] .entry { border-left: 2px solid var(--line); }
+
+body[data-theme="slytherin"] .topbar { border-bottom: 2px solid var(--accent); }
+body[data-theme="slytherin"] .sidebar { border-right: 2px solid var(--line); }
+body[data-theme="slytherin"] .tab { border-radius: 0; border-left: 3px solid transparent; }
+body[data-theme="slytherin"] .tab.is-active { border-left-color: var(--accent); }
+body[data-theme="slytherin"] :is(.composer, .settings-card, .chart-card, .contributions-card, .timeline-scroll) { border-radius: 2px; border-left: 4px solid var(--line); }
+body[data-theme="slytherin"] .metric { border-top: 2px solid var(--accent); }
+body[data-theme="slytherin"] .entry { border-bottom: 1px solid var(--line); border-radius: 0; }
+
+body[data-theme="arrakis"] .topbar { border-bottom: 3px solid var(--accent); }
+body[data-theme="arrakis"] .workspace-title h2 { color: var(--accent); letter-spacing: .08em; text-transform: uppercase; }
+body[data-theme="arrakis"] :is(.composer, .settings-card, .chart-card, .contributions-card, .timeline-scroll) { border-top: 3px solid var(--accent); border-radius: 0 14px 0 14px; }
+body[data-theme="arrakis"] .metric { border-radius: 0 9px 0 9px; }
+body[data-theme="arrakis"] .tab { border-radius: 0 8px 0 8px; }
+
+body[data-theme="winterfell"] .topbar { border-bottom: 3px double var(--accent); }
+body[data-theme="winterfell"] .workspace-title h2 { color: var(--accent); }
+body[data-theme="winterfell"] :is(.composer, .settings-card, .chart-card, .contributions-card, .timeline-scroll) { border-top: 3px double var(--accent); border-radius: 2px; }
+body[data-theme="winterfell"] .metric { border-top: 2px solid var(--accent); border-radius: 2px; }
+body[data-theme="winterfell"] .entry { border-bottom: 1px solid var(--line); border-radius: 0; }
+
+body[data-theme="pipboy"] { font-family: var(--font-mono); }
+body[data-theme="pipboy"] .topbar { border-bottom: 2px solid var(--accent); }
+body[data-theme="pipboy"] .workspace-title h2 { color: var(--accent); text-transform: uppercase; letter-spacing: .06em; }
+body[data-theme="pipboy"] :is(.composer, .settings-card, .chart-card, .contributions-card, .timeline-scroll) { border: 1px solid var(--line); border-top: 2px solid var(--accent); border-radius: 0; }
+body[data-theme="pipboy"] :is(.tab, button, input, select, textarea, .metric, .entry) { border-radius: 0; }
+body[data-theme="pipboy"] .tab.is-active { border-left: 3px solid var(--accent); }
+body[data-theme="pipboy"] .entry { border-bottom: 1px dashed var(--line); }
+
+body[data-theme="nightcity"] .topbar { border-bottom: 2px solid var(--accent); }
+body[data-theme="nightcity"] .workspace-title h2 { color: var(--accent); text-transform: uppercase; letter-spacing: .05em; }
+body[data-theme="nightcity"] .sidebar { border-right: 2px solid var(--focus); }
+body[data-theme="nightcity"] .tab { border-radius: 0; border-left: 3px solid transparent; }
+body[data-theme="nightcity"] .tab.is-active { border-left-color: var(--accent); }
+body[data-theme="nightcity"] :is(.composer, .settings-card, .chart-card, .contributions-card, .timeline-scroll) { border-top: 3px solid var(--accent); border-radius: 0 9px 0 0; }
+body[data-theme="nightcity"] .metric { border-bottom: 2px solid var(--focus); border-radius: 0; }
+body[data-theme="nightcity"] .entry { border-left: 2px solid var(--line); border-radius: 0; }
+
+body:is([data-theme="shire"], [data-theme="hogwarts"]) :is(.contribution-cell, .heat-legend i)[data-level="1"] { background: #b8d2ad; }
+body:is([data-theme="shire"], [data-theme="hogwarts"]) :is(.contribution-cell, .heat-legend i)[data-level="2"] { background: #8aac76; }
+body:is([data-theme="shire"], [data-theme="hogwarts"]) :is(.contribution-cell, .heat-legend i)[data-level="3"] { background: #527b4f; }
+body:is([data-theme="shire"], [data-theme="hogwarts"]) :is(.contribution-cell, .heat-legend i)[data-level="4"] { background: #335e3c; }
+
+@media (forced-colors: active) {
+  .theme-choice[aria-pressed="true"], .contribution-cell[aria-pressed="true"] { outline: 3px solid Highlight; }
+  .timeline-dot, .heat-legend i, .contribution-cell { border: 1px solid CanvasText; }
+  .contribution-cell:not([data-level="0"]) { background: Highlight; forced-color-adjust: none; }
+}
+
+/* Keep secondary rows light; emphasize controls and section boundaries. */
+body[data-contrast="high"] .entry { border-width: 1px; border-left-width: 3px; }
+body[data-contrast="high"] :is(.field, .field-help, .filter-summary, .entry-time, .chip, .entry-actions button, .chart-label) { font-size: 12px; }
+body[data-contrast="high"] .entry-actions button { min-height: 32px; }
+body[data-contrast="high"] .theme-choice { border-width: 2px; }
+body[data-contrast="high"] .theme-choice-description { font-size: 12px; }
+body[data-contrast="high"] .contributions-grid { --cell: 14px; }
+@media (max-width: 1050px) {
+  .theme-family-choices { grid-template-columns: repeat(2,minmax(0,1fr)); }
+  body[data-theme="star-trek"] .workspace { border-left-width: 7px; border-top-width: 9px; border-top-left-radius: 24px; }
+  body[data-theme="star-trek"] .tab { font-size: 16px; padding-left: 9px; }
+}
+@media (max-height: 680px) {
+  body[data-theme="star-trek"] .workspace { padding-top: 14px; margin-top: 8px; }
+  body[data-theme="star-trek"] .tab { min-height: 40px; padding-top: 7px; padding-bottom: 7px; }
+  body[data-theme="star-wars"] .workspace-title { padding-bottom: 10px; }
+}
+
+body.is-switching-theme, body.is-switching-theme * { transition: none !important; }

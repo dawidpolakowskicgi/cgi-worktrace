@@ -1,6 +1,6 @@
 param(
-    [string]$InstallDir = "$env:LOCALAPPDATA\worktrace\bin",
-    [string]$SourceUrl = "https://raw.githubusercontent.com/dawidpolakowskicgi/cgi-worktrace/main/worktrace.sh",
+    [string]$InstallDir = "$env:LOCALAPPDATA\tavri\bin",
+    [string]$SourceUrl = "",
     [switch]$NoPathUpdate
 )
 
@@ -17,7 +17,7 @@ function Find-RepoSource {
         return $null
     }
 
-    $candidate = Join-Path $repoRoot "worktrace.sh"
+    $candidate = Join-Path $repoRoot "tavri.sh"
 
     if (Test-Path -LiteralPath $candidate) {
         return $candidate
@@ -79,14 +79,17 @@ if (-not $InstallDir) {
 
 New-Item -ItemType Directory -Force -Path $InstallDir | Out-Null
 
-$worktraceScript = Join-Path $InstallDir "worktrace.sh"
-$worktraceCmd = Join-Path $InstallDir "worktrace.cmd"
+$tavriScript = Join-Path $InstallDir "tavri.sh"
+$tavriCmd = Join-Path $InstallDir "tavri.cmd"
 $repoSource = Find-RepoSource
 
 if ($repoSource) {
-    Copy-Item -LiteralPath $repoSource -Destination $worktraceScript -Force
+    Copy-Item -LiteralPath $repoSource -Destination $tavriScript -Force
 } else {
-    Invoke-WebRequest -Uri $SourceUrl -OutFile $worktraceScript
+    if (-not $SourceUrl) {
+        throw "Install Tavri from a local checkout, or pass -SourceUrl for a published release."
+    }
+    Invoke-WebRequest -Uri $SourceUrl -OutFile $tavriScript
 }
 
 $cmdContent = @'
@@ -103,15 +106,15 @@ if not defined BASH_EXE if exist "%ProgramFiles(x86)%\Git\usr\bin\bash.exe" set 
 if not defined BASH_EXE where bash.exe >nul 2>nul && set "BASH_EXE=bash.exe"
 
 if not defined BASH_EXE (
-  echo worktrace requires Git Bash. Install Git for Windows, then open a new terminal.
+  echo tavri requires Git Bash. Install Git for Windows, then open a new terminal.
   exit /b 1
 )
 
-"%BASH_EXE%" "%SCRIPT_DIR%worktrace.sh" %*
+"%BASH_EXE%" "%SCRIPT_DIR%tavri.sh" %*
 exit /b %ERRORLEVEL%
 '@
 
-Set-Content -Path $worktraceCmd -Value $cmdContent -Encoding ASCII
+Set-Content -Path $tavriCmd -Value $cmdContent -Encoding ASCII
 
 $pathUpdated = $false
 if (-not $NoPathUpdate) {
@@ -120,10 +123,10 @@ if (-not $NoPathUpdate) {
 
 $bashPath = Find-Bash
 
-Write-Host "Installed worktrace to $InstallDir"
+Write-Host "Installed tavri to $InstallDir"
 
 if ($pathUpdated) {
-    Write-Host "Added $InstallDir to your user PATH. Open a new terminal before running worktrace."
+    Write-Host "Added $InstallDir to your user PATH. Open a new terminal before running tavri."
 } elseif ($NoPathUpdate) {
     Write-Host "Skipped PATH update."
 } else {
@@ -132,7 +135,7 @@ if ($pathUpdated) {
 
 if ($bashPath) {
     Write-Host "Detected Bash: $bashPath"
-    Write-Host "Run: worktrace version"
+    Write-Host "Run: tavri version"
 } else {
-    Write-Host "Git Bash was not detected. Install Git for Windows before running worktrace."
+    Write-Host "Git Bash was not detected. Install Git for Windows before running tavri."
 }
